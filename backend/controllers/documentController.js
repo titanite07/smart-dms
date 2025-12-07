@@ -20,6 +20,8 @@ const uploadDocument = async (req, res) => {
             owner: req.user._id,
             parentFolder: parentFolder || null,
             currentPath: req.file.path,
+            filename: req.file.filename,
+            fileSize: req.file.size,
             currentVersion: 1,
             versions: []
         });
