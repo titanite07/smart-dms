@@ -16,14 +16,17 @@ services:
         generateValue: true
       - key: MONGODB_URI
         sync: false
+      - key: FRONTEND_URL
+        sync: false
     disk:
       name: uploads
       mountPath: /opt/render/project/src/backend/uploads
       sizeGB: 1
 
-  # Frontend Static Site
-  - type: static
+  # Frontend - deployed as web service with static files
+  - type: web
     name: smart-dms-frontend
+    runtime: static
     rootDir: frontend
     buildCommand: npm install && npm run build -- --configuration=production
     staticPublishPath: dist/dms-frontend
