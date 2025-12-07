@@ -477,7 +477,8 @@ const createPublicLink = async (req, res) => {
 
         await document.save();
 
-        const publicUrl = `${req.protocol}://${req.get('host')}/api/documents/public/${token}`;
+        const baseUrl = process.env.FRONTEND_URL || `${req.protocol}://${req.get('host')}`;
+        const publicUrl = `${baseUrl}/public/${token}`;
 
         res.json({
             message: 'Public link created',
