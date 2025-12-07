@@ -5,6 +5,7 @@ import { LandingComponent } from './components/landing/landing.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { ActivityLogComponent } from './components/activity-log/activity-log.component';
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
+import { PublicViewComponent } from './components/public-view/public-view.component';
 import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
@@ -14,5 +15,6 @@ export const routes: Routes = [
     { path: 'profile', component: UserProfileComponent, canActivate: [authGuard], data: { animation: 'ProfilePage' } },
     { path: 'activity', component: ActivityLogComponent, canActivate: [authGuard], data: { animation: 'ActivityPage' } },
     { path: 'admin', component: AdminDashboardComponent, canActivate: [authGuard], data: { animation: 'AdminPage' } },
+    { path: 'public/:token', component: PublicViewComponent },
     { path: '**', redirectTo: '' }
 ];
