@@ -242,12 +242,29 @@ const downloadFile = async (req, res) => {
             if (!versionDoc) {
                 return res.status(404).json({ message: 'Version not found' });
             }
+            // For versions, try to extract filename from filePath or trust filePath if relative
             filePath = versionDoc.filePath;
         } else {
-            filePath = document.currentPath;
+            // For current version
+            if (document.filename) {
+                // If we have the filename, construct path reliably
+                filePath = path.join(__dirname, '../uploads', document.filename);
+            } else {
+                // Fallback for older docs: normalize path separators
+                filePath = document.currentPath;
+            }
+        }
+
+        // Fix for cross-OS path issues (Windows backslashes on Linux)
+        if (filePath.includes('\\') && path.sep === '/') {
+            // If path has backslashes but we are on Linux
+            const parts = filePath.split('\\');
+            const fileName = parts[parts.length - 1];
+            filePath = path.join(__dirname, '../uploads', fileName);
         }
 
         if (!fs.existsSync(filePath)) {
+            console.error(`File not found at path: ${filePath}`);
             return res.status(404).json({ message: 'File not found on server' });
         }
 
