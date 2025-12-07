@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
+import { environment } from '../../environments/environment';
 
 export interface Comment {
     _id: string;
@@ -79,7 +80,7 @@ export interface AdminUser {
     providedIn: 'root'
 })
 export class AdvancedService {
-    private apiUrl = 'http://localhost:5000/api';
+    private apiUrl = environment.apiUrl;
 
     constructor(
         private http: HttpClient,

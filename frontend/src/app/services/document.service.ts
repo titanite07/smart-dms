@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
+import { environment } from '../../environments/environment';
 
 export interface Document {
     _id: string;
@@ -24,7 +25,7 @@ export interface Document {
     providedIn: 'root'
 })
 export class DocumentService {
-    private apiUrl = 'http://localhost:5000/api/documents';
+    private apiUrl = `${environment.apiUrl}/documents`;
 
     constructor(
         private http: HttpClient,

@@ -16,7 +16,16 @@ const adminRoutes = require('./routes/admin');
 
 const app = express();
 
-app.use(cors());
+const corsOptions = {
+    origin: [
+        'http://localhost:4200',
+        'http://localhost:8000',
+        'https://smart-dms-frontend.onrender.com',
+        process.env.FRONTEND_URL
+    ].filter(Boolean),
+    credentials: true
+};
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
