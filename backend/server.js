@@ -16,16 +16,7 @@ const adminRoutes = require('./routes/admin');
 
 const app = express();
 
-const corsOptions = {
-    origin: [
-        'http://localhost:4200',
-        'http://localhost:8000',
-        'https://smart-dms-frontend.onrender.com',
-        process.env.FRONTEND_URL
-    ].filter(Boolean),
-    credentials: true
-};
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -38,6 +29,7 @@ mongoose.connect(process.env.MONGODB_URI)
     .then(() => console.log('MongoDB connected'))
     .catch((err) => console.log('MongoDB connection error:', err));
 
+// API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/documents', documentRoutes);
 app.use('/api/folders', folderRoutes);
@@ -45,9 +37,22 @@ app.use('/api/activity', activityRoutes);
 app.use('/api/comments', commentRoutes);
 app.use('/api/admin', adminRoutes);
 
-app.get('/', (req, res) => {
-    res.json({ message: 'Document Management System API' });
-});
+// Serve Angular static files in production
+const frontendPath = path.join(__dirname, 'public');
+if (fs.existsSync(frontendPath)) {
+    app.use(express.static(frontendPath));
+
+    // Handle Angular routing - serve index.html for all non-API routes
+    app.get('*', (req, res) => {
+        if (!req.path.startsWith('/api')) {
+            res.sendFile(path.join(frontendPath, 'index.html'));
+        }
+    });
+} else {
+    app.get('/', (req, res) => {
+        res.json({ message: 'SmartDMS API - Frontend not deployed' });
+    });
+}
 
 app.use((err, req, res, next) => {
     console.error(err.stack);

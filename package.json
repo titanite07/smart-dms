@@ -1,0 +1,25 @@
+{
+    "name": "smart-dms",
+    "version": "1.0.0",
+    "description": "SmartDMS - Document Management System",
+    "scripts": {
+        "install:all": "cd backend && npm install && cd ../frontend && npm install",
+        "build:frontend": "cd frontend && npm run build -- --configuration=production",
+        "copy:frontend": "node -e \"const fs=require('fs');const path=require('path');const src='frontend/dist/dms-frontend';const dest='backend/public';if(fs.existsSync(dest))fs.rmSync(dest,{recursive:true});fs.cpSync(src,dest,{recursive:true});console.log('Frontend copied to backend/public')\"",
+        "build": "npm run build:frontend && npm run copy:frontend",
+        "start": "cd backend && npm start",
+        "dev:backend": "cd backend && npm start",
+        "dev:frontend": "cd frontend && npm start"
+    },
+    "engines": {
+        "node": ">=18.0.0"
+    },
+    "keywords": [
+        "document-management",
+        "angular",
+        "nodejs",
+        "mongodb"
+    ],
+    "author": "",
+    "license": "MIT"
+}
