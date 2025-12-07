@@ -1,0 +1,271 @@
+<div class="min-h-screen bg-black text-white overflow-x-hidden">
+    <!-- Animated Background -->
+    <div class="fixed inset-0 z-0">
+        <!-- Gradient Orbs -->
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+        <!-- Grid Pattern -->
+        <div class="grid-pattern"></div>
+        <!-- Noise Overlay -->
+        <div class="noise-overlay"></div>
+    </div>
+
+    <!-- Floating 3D Elements -->
+    <div class="floating-shapes">
+        <div class="shape shape-1">
+            <div class="cube">
+                <div class="cube-face front"></div>
+                <div class="cube-face back"></div>
+                <div class="cube-face left"></div>
+                <div class="cube-face right"></div>
+                <div class="cube-face top"></div>
+                <div class="cube-face bottom"></div>
+            </div>
+        </div>
+        <div class="shape shape-2">
+            <div class="ring"></div>
+        </div>
+        <div class="shape shape-3">
+            <div class="pyramid">
+                <div class="pyramid-face"></div>
+                <div class="pyramid-face"></div>
+                <div class="pyramid-face"></div>
+                <div class="pyramid-face"></div>
+            </div>
+        </div>
+        <div class="shape shape-4">
+            <div class="sphere"></div>
+        </div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="fixed top-0 left-0 right-0 z-50 nav-glass">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center gap-3 group cursor-pointer">
+                    <div class="logo-container">
+                        <div class="logo-glow"></div>
+                        <div class="logo-icon">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                                </path>
+                            </svg>
+                        </div>
+                    </div>
+                    <span class="text-2xl font-bold gradient-text tracking-tight">SmartDMS</span>
+                </div>
+                <div class="flex items-center gap-6">
+                    <a href="#features" class="nav-link">Features</a>
+                    <a href="#how-it-works" class="nav-link">How it Works</a>
+                    <a routerLink="/login" class="nav-link">Sign In</a>
+                    <a routerLink="/login" class="cta-button">
+                        <span>Get Started</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center pt-20 z-10">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <!-- Animated Badge -->
+            <div class="hero-badge" style="animation-delay: 0.2s">
+                <div class="pulse-dot"></div>
+                <span>Introducing SmartDMS v1.0</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+            </div>
+
+            <!-- Main Headline -->
+            <h1 class="hero-title" style="animation-delay: 0.4s">
+                <span class="title-line">Document Management</span>
+                <span class="title-line title-gradient">Reimagined for the Future</span>
+            </h1>
+
+            <!-- Subtitle -->
+            <p class="hero-subtitle" style="animation-delay: 0.6s">
+                Experience enterprise-grade document management with AI-powered organization,
+                <br class="hidden md:block">
+                real-time collaboration, and military-grade security. Built for teams that move fast.
+            </p>
+
+            <!-- CTA Buttons -->
+            <div class="hero-cta" style="animation-delay: 0.8s">
+                <a routerLink="/login" class="btn-primary">
+                    <span>Start Free Trial</span>
+                    <div class="btn-shine"></div>
+                </a>
+                <a href="#demo" class="btn-secondary">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z"></path>
+                    </svg>
+                    <span>Watch Demo</span>
+                </a>
+            </div>
+
+            <!-- Animated Stats -->
+            <div class="hero-stats" style="animation-delay: 1s">
+                <div class="stat-item">
+                    <span class="stat-number">10K+</span>
+                    <span class="stat-label">Active Users</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-number">99.9%</span>
+                    <span class="stat-label">Uptime</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-number">256-bit</span>
+                    <span class="stat-label">Encryption</span>
+                </div>
+            </div>
+
+            <!-- 3D Preview Card -->
+            <div class="preview-container" style="animation-delay: 1.2s">
+                <div class="preview-card">
+                    <div class="preview-glow"></div>
+                    <div class="preview-content">
+                        <div class="preview-header">
+                            <div class="preview-dots">
+                                <span class="dot red"></span>
+                                <span class="dot yellow"></span>
+                                <span class="dot green"></span>
+                            </div>
+                            <span class="preview-title">SmartDMS Dashboard</span>
+                        </div>
+                        <div class="preview-body">
+                            <div class="preview-sidebar">
+                                <div class="sidebar-item active"></div>
+                                <div class="sidebar-item"></div>
+                                <div class="sidebar-item"></div>
+                                <div class="sidebar-item"></div>
+                            </div>
+                            <div class="preview-main">
+                                <div class="file-grid">
+                                    <div class="file-item" *ngFor="let i of [1,2,3,4,5,6]">
+                                        <div class="file-icon"></div>
+                                        <div class="file-line"></div>
+                                        <div class="file-line short"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="scroll-indicator">
+            <div class="mouse">
+                <div class="wheel"></div>
+            </div>
+            <span>Scroll to explore</span>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="relative py-32 z-10">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-20">
+                <span class="section-label">FEATURES</span>
+                <h2 class="section-title">Everything You Need to <span class="text-gradient">Succeed</span></h2>
+                <p class="section-subtitle">Powerful features designed for modern teams and enterprise workflows</p>
+            </div>
+
+            <div class="features-grid">
+                <!-- Feature Cards -->
+                <div class="feature-card" *ngFor="let feature of features; let i = index"
+                    [style.animation-delay]="(i * 0.1) + 's'">
+                    <div class="feature-icon" [style.background]="feature.gradient">
+                        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                [attr.d]="feature.icon"></path>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">{{ feature.title }}</h3>
+                    <p class="feature-desc">{{ feature.description }}</p>
+                    <div class="feature-glow" [style.background]="feature.gradient"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="relative py-32 z-10">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-20">
+                <span class="section-label">HOW IT WORKS</span>
+                <h2 class="section-title">Get Started in <span class="text-gradient">3 Simple Steps</span></h2>
+                <p class="section-subtitle">Our intuitive platform gets you up and running in minutes</p>
+            </div>
+
+            <div class="steps-container">
+                <div class="step-line"></div>
+                <div class="step" *ngFor="let step of steps; let i = index">
+                    <div class="step-number">{{ i + 1 }}</div>
+                    <div class="step-content">
+                        <h3 class="step-title">{{ step.title }}</h3>
+                        <p class="step-desc">{{ step.description }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="relative py-32 z-10">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <div class="cta-card">
+                <div class="cta-orb cta-orb-1"></div>
+                <div class="cta-orb cta-orb-2"></div>
+                <h2 class="cta-title">Ready to Transform Your Workflow?</h2>
+                <p class="cta-subtitle">Join thousands of teams already using SmartDMS to manage their documents
+                    efficiently.</p>
+                <a routerLink="/login" class="btn-primary large">
+                    <span>Start Your Free Trial</span>
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                    </svg>
+                </a>
+                <p class="cta-note">No credit card required • Free 14-day trial</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="relative py-12 z-10 border-t border-white/10">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="w-8 h-8 bg-gradient-to-r from-violet-600 to-indigo-600 rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <span class="font-bold text-lg">SmartDMS</span>
+                </div>
+                <div class="flex items-center gap-8 text-sm text-gray-400">
+                    <a class="hover:text-white transition-colors">Privacy</a>
+                    <a class="hover:text-white transition-colors">Terms</a>
+                    <a class="hover:text-white transition-colors">Support</a>
+                </div>
+                <div class="text-sm text-gray-500">
+                    &copy; 2024 SmartDMS. All rights reserved.
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>

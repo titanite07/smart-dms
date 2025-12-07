@@ -1,0 +1,326 @@
+<!-- Version History Modal - GitHub-style Commit Graph (Theme Matched) -->
+<div
+    class="fixed inset-0 bg-black/50 dark:bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fadeIn">
+    <div
+        class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl max-w-2xl w-full overflow-hidden transform transition-all border border-gray-200 dark:border-slate-700 animate-slideUp">
+
+        <!-- Header -->
+        <div class="px-6 py-5 border-b border-gray-100 dark:border-slate-700 bg-zinc-50/80 dark:bg-slate-800/50">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center gap-4">
+                    <!-- Git Branch Icon -->
+                    <div
+                        class="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-500 to-green-600 flex items-center justify-center shadow-lg shadow-emerald-500/20">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-xl text-black dark:text-white font-display">Version History</h3>
+                        <p class="text-zinc-500 dark:text-slate-400 text-sm truncate max-w-xs">{{ document?.title }}</p>
+                    </div>
+                </div>
+                <button (click)="closeModal()"
+                    class="p-2 text-zinc-400 hover:text-black dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-slate-700 rounded-xl transition-all duration-200">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                        </path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Upload New Version (Owner only) -->
+        <div *ngIf="isOwner"
+            class="px-6 py-4 bg-zinc-50/50 dark:bg-slate-800/30 border-b border-gray-100 dark:border-slate-700/30">
+            <div class="flex items-center gap-4">
+                <div class="flex-1">
+                    <label class="relative cursor-pointer group">
+                        <input type="file" (change)="onVersionFileSelected($event)" [disabled]="uploadingVersion"
+                            class="hidden" />
+                        <div
+                            class="flex items-center gap-3 px-4 py-3 bg-white dark:bg-slate-700/50 hover:bg-zinc-50 dark:hover:bg-slate-700 rounded-xl border border-gray-200 dark:border-slate-600/50 hover:border-emerald-400 dark:hover:border-emerald-500/50 transition-all duration-300 group-hover:shadow-lg group-hover:shadow-emerald-500/10">
+                            <div
+                                class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-50 to-green-100 dark:from-emerald-500/20 dark:to-green-500/20 flex items-center justify-center border border-emerald-200 dark:border-emerald-500/30">
+                                <svg class="w-5 h-5 text-emerald-600 dark:text-emerald-400" fill="none"
+                                    stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 4v16m8-8H4"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <span class="text-black dark:text-white font-medium">Upload New Version</span>
+                                <p class="text-xs text-zinc-500 dark:text-slate-400">Click to select a file</p>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+                <div *ngIf="uploadingVersion" class="flex items-center gap-2 text-emerald-600 dark:text-emerald-400">
+                    <div
+                        class="w-5 h-5 border-2 border-emerald-600 dark:border-emerald-400 border-t-transparent rounded-full animate-spin">
+                    </div>
+                    <span class="text-sm">Uploading...</span>
+                </div>
+            </div>
+            <p *ngIf="error" class="text-red-500 text-xs mt-2 flex items-center gap-1">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                        clip-rule="evenodd"></path>
+                </svg>
+                {{ error }}
+            </p>
+        </div>
+
+        <!-- Loading State -->
+        <div *ngIf="loading" class="p-12 flex flex-col items-center justify-center">
+            <div class="relative w-16 h-16">
+                <div class="absolute inset-0 rounded-full border-4 border-gray-200 dark:border-slate-700"></div>
+                <div
+                    class="absolute inset-0 rounded-full border-4 border-emerald-500 border-t-transparent animate-spin">
+                </div>
+            </div>
+            <p class="text-zinc-500 dark:text-slate-400 mt-4">Loading version history...</p>
+        </div>
+
+        <!-- Commit Graph -->
+        <div *ngIf="!loading" class="p-6 max-h-[60vh] overflow-y-auto custom-scrollbar">
+
+            <!-- Stats Bar -->
+            <div
+                class="flex items-center gap-6 mb-6 px-4 py-3 bg-zinc-50 dark:bg-slate-800/50 rounded-xl border border-gray-100 dark:border-slate-700/50">
+                <div class="flex items-center gap-2">
+                    <div class="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></div>
+                    <span class="text-sm text-zinc-600 dark:text-slate-300"><span
+                            class="font-bold text-black dark:text-white">{{ allVersions.length }}</span> version{{
+                        allVersions.length !== 1 ? 's' : '' }}</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-zinc-400 dark:text-slate-400" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <span class="text-sm text-zinc-500 dark:text-slate-400">Last updated {{ allVersions[0] ?
+                        getRelativeTime(allVersions[0].uploadedAt) : 'never' }}</span>
+                </div>
+            </div>
+
+            <!-- Version Timeline -->
+            <div class="relative">
+                <!-- Animated Vertical Line -->
+                <div
+                    class="absolute left-[27px] top-0 bottom-0 w-0.5 bg-gradient-to-b from-emerald-300 via-blue-300 to-purple-300 dark:from-emerald-500 dark:via-blue-500 dark:to-purple-500 opacity-30">
+                </div>
+                <div class="absolute left-[27px] top-0 w-0.5 bg-gradient-to-b from-emerald-500 to-emerald-600 transition-all duration-1000 ease-out"
+                    [style.height]="animationStarted ? '100%' : '0%'">
+                </div>
+
+                <!-- Version Nodes -->
+                <div *ngFor="let version of allVersions; let i = index; let first = first"
+                    class="relative flex items-start gap-4 pb-6 last:pb-0 group" [class.opacity-0]="!animationStarted"
+                    [class.animate-slideInLeft]="animationStarted" [style.animation-delay]="getAnimationDelay(i)">
+
+                    <!-- Node -->
+                    <div class="relative z-10 flex-shrink-0">
+                        <!-- Glow Effect -->
+                        <div class="absolute inset-0 w-14 h-14 rounded-full blur-lg transition-all duration-300"
+                            [ngClass]="first ? 'bg-emerald-400/30 dark:bg-emerald-500/40 group-hover:bg-emerald-400/50 dark:group-hover:bg-emerald-500/60' : 'bg-blue-300/20 dark:bg-blue-500/20 group-hover:bg-blue-400/40 dark:group-hover:bg-blue-500/40'">
+                        </div>
+
+                        <!-- Node Circle -->
+                        <div class="relative w-14 h-14 rounded-full bg-gradient-to-br flex items-center justify-center shadow-xl transform transition-all duration-300 group-hover:scale-110"
+                            [ngClass]="getNodeColor(i, allVersions.length)">
+                            <span class="text-white font-bold text-lg">v{{ version.versionNumber }}</span>
+                        </div>
+
+                        <!-- Current Badge -->
+                        <div *ngIf="first"
+                            class="absolute -top-1 -right-1 w-5 h-5 bg-white rounded-full flex items-center justify-center shadow-lg animate-bounce border border-emerald-100">
+                            <svg class="w-3 h-3 text-emerald-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- Version Info Card -->
+                    <div class="flex-1 bg-white dark:bg-slate-800/50 hover:bg-zinc-50 dark:hover:bg-slate-800 rounded-2xl border transition-all duration-300 overflow-hidden group-hover:shadow-xl group-hover:shadow-zinc-200/50 dark:group-hover:shadow-slate-900/50"
+                        [ngClass]="first ? 'border-emerald-200 dark:border-emerald-500/30 hover:border-emerald-300 dark:hover:border-emerald-500/50' : 'border-gray-200 dark:border-slate-700/50 hover:border-gray-300 dark:hover:border-slate-600'">
+
+                        <!-- Card Header -->
+                        <div
+                            class="px-5 py-4 flex items-center justify-between border-b border-gray-100 dark:border-slate-700/30">
+                            <div class="flex items-center gap-3">
+                                <span *ngIf="first"
+                                    class="px-3 py-1 bg-gradient-to-r from-emerald-500 to-green-500 text-white text-xs font-bold rounded-full shadow-lg shadow-emerald-500/20">
+                                    CURRENT
+                                </span>
+                                <span *ngIf="!first"
+                                    class="px-3 py-1 bg-zinc-100 dark:bg-slate-700 text-zinc-600 dark:text-slate-300 text-xs font-medium rounded-full">
+                                    PREVIOUS
+                                </span>
+                                <code
+                                    class="text-xs text-zinc-400 dark:text-slate-500 font-mono bg-zinc-100 dark:bg-slate-900/50 px-2 py-1 rounded">
+                                    {{ getCommitHash() }}
+                                </code>
+                            </div>
+                            <span class="text-xs text-zinc-500 dark:text-slate-400">{{ version.uploadedAt |
+                                date:'medium' }}</span>
+                        </div>
+
+                        <!-- Card Body -->
+                        <div class="px-5 py-4">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-4">
+                                    <!-- File Icon -->
+                                    <div
+                                        class="w-10 h-10 rounded-xl bg-zinc-100 dark:bg-slate-700/50 flex items-center justify-center">
+                                        <svg class="w-5 h-5 text-zinc-500 dark:text-slate-400" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                                            </path>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-black dark:text-white font-medium">Version {{
+                                            version.versionNumber }} uploaded</p>
+                                        <p class="text-xs text-zinc-500 dark:text-slate-400">{{
+                                            getRelativeTime(version.uploadedAt) }}</p>
+                                    </div>
+                                </div>
+
+                                <!-- Actions -->
+                                <div class="flex items-center gap-2">
+                                    <button (click)="downloadVersion(version.versionNumber)"
+                                        class="flex items-center gap-2 px-4 py-2 bg-zinc-100 dark:bg-slate-700/50 hover:bg-zinc-200 dark:hover:bg-slate-700 text-zinc-700 dark:text-slate-300 hover:text-black dark:hover:text-white rounded-xl text-sm font-medium transition-all duration-200 border border-gray-200 dark:border-slate-600/50 hover:border-gray-300 dark:hover:border-slate-500">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4">
+                                            </path>
+                                        </svg>
+                                        Download
+                                    </button>
+                                    <button *ngIf="isOwner && !first" (click)="deleteVersion(version._id)"
+                                        class="p-2 text-zinc-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-xl transition-all duration-200"
+                                        title="Delete this version">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                                            </path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Empty State -->
+                <div *ngIf="allVersions.length === 0" class="text-center py-12">
+                    <div
+                        class="w-20 h-20 mx-auto mb-4 rounded-full bg-zinc-100 dark:bg-slate-800 flex items-center justify-center">
+                        <svg class="w-10 h-10 text-zinc-400 dark:text-slate-600" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <p class="text-zinc-500 dark:text-slate-400">No version history available</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div
+            class="px-6 py-4 border-t border-gray-100 dark:border-slate-700/50 bg-zinc-50/50 dark:bg-slate-800/30 flex justify-between items-center">
+            <div class="flex items-center gap-2 text-xs text-zinc-500 dark:text-slate-500">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span>Versions are stored permanently until deleted</span>
+            </div>
+            <button (click)="closeModal()"
+                class="px-5 py-2 bg-black dark:bg-white text-white dark:text-black rounded-xl font-medium hover:bg-zinc-800 dark:hover:bg-zinc-100 shadow-lg shadow-black/10 dark:shadow-white/10 transition-all duration-200">
+                Close
+            </button>
+        </div>
+    </div>
+</div>
+
+<style>
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px) scale(0.95);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    @keyframes slideInLeft {
+        from {
+            opacity: 0;
+            transform: translateX(-30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    .animate-fadeIn {
+        animation: fadeIn 0.3s ease-out forwards;
+    }
+
+    .animate-slideUp {
+        animation: slideUp 0.4s ease-out forwards;
+    }
+
+    .animate-slideInLeft {
+        animation: slideInLeft 0.5s ease-out forwards;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #d1d5db;
+        border-radius: 3px;
+    }
+
+    .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #475569;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #9ca3af;
+    }
+
+    .dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #64748b;
+    }
+</style>

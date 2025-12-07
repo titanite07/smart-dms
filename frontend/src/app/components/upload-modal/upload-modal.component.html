@@ -1,0 +1,83 @@
+<div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4" (click)="closeModal()">
+    <div class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md" (click)="$event.stopPropagation()">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold text-gray-800">Upload Document</h2>
+            <button (click)="closeModal()" class="text-gray-500 hover:text-gray-700 transition">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
+            </button>
+        </div>
+
+        <form (ngSubmit)="onSubmit()" class="space-y-5">
+            <!-- Destination Context -->
+            <div class="bg-gray-50 p-3 rounded-lg border border-gray-100 flex items-center justify-between">
+                <span class="text-sm text-gray-500">Uploading to:</span>
+                <span class="text-sm font-semibold text-gray-800 flex items-center gap-1">
+                    <svg class="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
+                        <path
+                            d="M19.7 7h-6.3c-.6 0-1.1-.4-1.3-.9l-.6-1.7c-.2-.6-.8-1-1.4-1h-5.9c-1.1 0-2 .9-2 2v12.2c0 1.1.9 2 2 2h15.5c1.1 0 2-.9 2-2v-8.6c0-1.1-.9-2-2-2z">
+                        </path>
+                    </svg>
+                    {{ currentFolderName }}
+                </span>
+            </div>
+
+            <!-- Title Input (Hidden for multi-file drag drop) -->
+            <div *ngIf="!isDragDrop || selectedFiles.length === 1">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Document Title</label>
+                <input type="text" [(ngModel)]="title" name="title" required
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
+                    placeholder="Enter document title" />
+            </div>
+
+            <!-- Simplified File Display for Drag Drop -->
+            <div *ngIf="isDragDrop">
+                <div class="block text-sm font-medium text-gray-700 mb-2">Selected Files</div>
+                <div
+                    class="max-h-32 overflow-y-auto custom-scrollbar border border-gray-200 rounded-lg divide-y divide-gray-100">
+                    <div *ngFor="let file of selectedFiles"
+                        class="p-3 text-sm text-gray-600 flex items-center gap-2 bg-white">
+                        <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                            </path>
+                        </svg>
+                        <span class="truncate">{{ file.name }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Tags (comma-separated)</label>
+                <input type="text" [(ngModel)]="tags" name="tags"
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
+                    placeholder="e.g., Invoice, HR, Important" />
+            </div>
+
+            <div *ngIf="!isDragDrop" class="space-y-3">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Select Files or Folder</label>
+                <div class="flex gap-2">
+                    <div class="flex-1">
+                        <input type="file" (change)="onFileSelected($event)" multiple
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100" />
+                        <p class="text-xs text-gray-400 mt-1">Select individual files</p>
+                    </div>
+                </div>
+                <div class="text-center text-gray-400 text-sm">— or —</div>
+                <div>
+                    <input type="file" (change)="onFileSelected($event)" webkitdirectory directory
+                        class="w-full px-4 py-3 border border-dashed border-indigo-300 rounded-lg bg-indigo-50 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-indigo-100 file:text-indigo-700 hover:file:bg-indigo-200" />
+                    <p class="text-xs text-gray-400 mt-1">Select a folder (all files inside will be uploaded)</p>
+                </div>
+                <p class="text-sm text-gray-500">Accepted: All file types (Max 50MB per file)</p>
+            </div>
+
+            <button type="submit" [disabled]="uploading || selectedFiles.length === 0 || !title"
+                class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white py-3 rounded-lg font-semibold hover:from-purple-700 hover:to-indigo-700 transition transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50">
+                {{ uploading ? 'Uploading...' : (selectedFiles.length > 1 ? 'Upload Files' : 'Upload Document') }}
+            </button>
+        </form>
+    </div>
+</div>
