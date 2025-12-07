@@ -27,7 +27,7 @@
             <!-- Title Input (Hidden for multi-file drag drop) -->
             <div *ngIf="!isDragDrop || selectedFiles.length === 1">
                 <label class="block text-sm font-medium text-gray-700 mb-2">Document Title</label>
-                <input type="text" [(ngModel)]="title" name="title" required
+                <input type="text" [(ngModel)]="title" (ngModelChange)="onTitleChange()" name="title" required
                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
                     placeholder="Enter document title" />
             </div>
