@@ -42,8 +42,7 @@
 
               <!-- Rotating Status Button (Aside) -->
               <div *ngIf="!isLogin && emailStatus !== 'idle'" class="relative group">
-                <div
-                  class="w-10 h-10 rounded-lg flex items-center justify-center transition-all duration-700 transform rotate-180"
+                <div class="w-10 h-10 rounded-lg flex items-center justify-center transition-all duration-300"
                   [class.bg-gray-100]="emailStatus === 'checking'" [class.bg-green-100]="emailStatus === 'available'"
                   [class.bg-red-100]="emailStatus === 'taken'">
 
