@@ -1,8 +1,57 @@
 ﻿<div class="w-full overflow-hidden">
+    <div *ngIf="(documents.length > 0 || folders.length > 0)"
+        class="mb-4 flex items-center justify-between bg-gray-50 px-4 py-3 rounded-lg">
+        <div class="flex items-center gap-4">
+            <button (click)="toggleSelectionMode()" [class.bg-indigo-600]="selectionMode"
+                [class.text-white]="selectionMode" [class.bg-white]="!selectionMode"
+                [class.text-gray-700]="!selectionMode"
+                class="px-4 py-2 rounded-lg border border-gray-300 font-medium text-sm transition-all flex items-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4">
+                    </path>
+                </svg>
+                {{ selectionMode ? 'Exit Selection' : 'Select Items' }}
+            </button>
+            <div *ngIf="selectionMode" class="flex items-center gap-2">
+                <input type="checkbox" [checked]="selectAll" (change)="toggleSelectAll()"
+                    class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                <span class="text-sm text-gray-600">Select All</span>
+                <span *ngIf="selectedItems.size > 0"
+                    class="ml-2 px-2 py-1 bg-indigo-100 text-indigo-700 rounded text-xs font-medium">
+                    {{selectedItems.size}} selected
+                </span>
+            </div>
+        </div>
+        <div class="flex items-center gap-2">
+            <button *ngIf="selectionMode && selectedItems.size > 0" (click)="deleteAllSelected()"
+                class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium text-sm transition-all flex items-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                    </path>
+                </svg>
+                Delete Selected
+            </button>
+            <button *ngIf="isTrashView && (documents.length > 0 || folders.length > 0) && !selectionMode"
+                (click)="deleteAllInTrash()"
+                class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium text-sm transition-all flex items-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                    </path>
+                </svg>
+                Empty Trash
+            </button>
+        </div>
+    </div>
     <div class="overflow-x-auto">
         <table class="w-full">
             <thead>
                 <tr class="bg-zinc-50 dark:bg-slate-900/50 border-b border-gray-100 dark:border-slate-800 text-left">
+                    <th *ngIf="selectionMode"
+                        class="py-4 px-6 text-xs font-semibold text-zinc-500 dark:text-zinc-400 w-12">
+                    </th>
                     <th
                         class="py-4 px-6 text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider font-display rounded-tl-xl">
                         File Name</th>
@@ -29,6 +78,11 @@
                     draggable="true" (click)="selectItem('folder', folder._id)" (dblclick)="onFolderClick(folder._id)"
                     (dragstart)="onFolderDragStart($event, folder)" (dragover)="onFolderDragOver($event)"
                     (drop)="onFolderDrop($event, folder)">
+                    <td *ngIf="selectionMode" class="px-6 py-4" (click)="$event.stopPropagation()">
+                        <input type="checkbox" [checked]="isItemSelected(folder._id)"
+                            (change)="toggleItemSelection(folder._id)"
+                            class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                    </td>
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="flex items-center gap-4">
                             <div
@@ -104,6 +158,11 @@
                 <tr *ngFor="let doc of documents"
                     class="group hover:bg-zinc-50/50 dark:hover:bg-slate-800/50 transition-all duration-200"
                     (click)="selectedDocument = doc" draggable="true" (dragstart)="onDocDragStart($event, doc)">
+                    <td *ngIf="selectionMode" class="px-6 py-4" (click)="$event.stopPropagation()">
+                        <input type="checkbox" [checked]="isItemSelected(doc._id)"
+                            (change)="toggleItemSelection(doc._id)"
+                            class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                    </td>
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="flex items-center gap-4">
                             <div class="w-10 h-10 rounded-lg flex items-center justify-center shadow-sm transition-transform group-hover:scale-105"

@@ -32,6 +32,9 @@ export class DocumentListComponent {
     uploadingVersion = false;
     sharing = false;
     error = '';
+    selectionMode = false;
+    selectedItems: Set<string> = new Set();
+    selectAll = false;
     constructor(
         private documentService: DocumentService,
         private folderService: FolderService
@@ -121,6 +124,88 @@ export class DocumentListComponent {
                 console.error('Permanent delete folder failed:', err);
                 alert('Failed to permanently delete folder');
             }
+        });
+    }
+    toggleSelectionMode(): void {
+        this.selectionMode = !this.selectionMode;
+        if (!this.selectionMode) {
+            this.selectedItems.clear();
+            this.selectAll = false;
+        }
+    }
+    toggleSelectAll(): void {
+        this.selectAll = !this.selectAll;
+        if (this.selectAll) {
+            this.documents.forEach(doc => this.selectedItems.add(doc._id));
+            this.folders.forEach(folder => this.selectedItems.add(folder._id));
+        } else {
+            this.selectedItems.clear();
+        }
+    }
+    toggleItemSelection(id: string): void {
+        if (this.selectedItems.has(id)) {
+            this.selectedItems.delete(id);
+        } else {
+            this.selectedItems.add(id);
+        }
+        this.updateSelectAllState();
+    }
+    updateSelectAllState(): void {
+        const totalItems = this.documents.length + this.folders.length;
+        this.selectAll = this.selectedItems.size === totalItems && totalItems > 0;
+    }
+    isItemSelected(id: string): boolean {
+        return this.selectedItems.has(id);
+    }
+    deleteAllSelected(): void {
+        if (this.selectedItems.size === 0) return;
+        const message = this.isTrashView
+            ? `Permanently delete ${this.selectedItems.size} item(s)? This cannot be undone.`
+            : `Delete ${this.selectedItems.size} item(s)?`;
+        if (!confirm(message)) return;
+        const deletePromises: any[] = [];
+        this.selectedItems.forEach(id => {
+            const doc = this.documents.find(d => d._id === id);
+            const folder = this.folders.find(f => f._id === id);
+            if (doc) {
+                const promise = this.isTrashView
+                    ? this.documentService.permanentDelete(id)
+                    : this.documentService.deleteDocument(id);
+                deletePromises.push(promise.toPromise());
+            }
+            if (folder) {
+                const promise = this.isTrashView
+                    ? this.folderService.permanentDeleteFolder(id)
+                    : this.folderService.deleteFolder(id);
+                deletePromises.push(promise.toPromise());
+            }
+        });
+        Promise.all(deletePromises).then(() => {
+            this.selectedItems.clear();
+            this.selectAll = false;
+            this.selectionMode = false;
+            this.refresh.emit();
+        }).catch(err => {
+            console.error('Delete failed:', err);
+            alert('Some items failed to delete');
+        });
+    }
+    deleteAllInTrash(): void {
+        const totalItems = this.documents.length + this.folders.length;
+        if (totalItems === 0) return;
+        if (!confirm(`Permanently delete ALL ${totalItems} item(s) in trash? This cannot be undone.`)) return;
+        const deletePromises: any[] = [];
+        this.documents.forEach(doc => {
+            deletePromises.push(this.documentService.permanentDelete(doc._id).toPromise());
+        });
+        this.folders.forEach(folder => {
+            deletePromises.push(this.folderService.permanentDeleteFolder(folder._id).toPromise());
+        });
+        Promise.all(deletePromises).then(() => {
+            this.refresh.emit();
+        }).catch(err => {
+            console.error('Delete all failed:', err);
+            alert('Some items failed to delete');
         });
     }
     draggedDocId: string | null = null;
