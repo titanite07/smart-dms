@@ -40,6 +40,14 @@ export class DashboardComponent implements OnInit {
     showDuplicatesModal = false;
     duplicates: any[] = [];
 
+    // Search Filters
+    showFilters = false;
+    selectedFileType = '';
+    dateFrom = '';
+    dateTo = '';
+    minSize = '';
+    maxSize = '';
+
     @HostListener('document:keydown', ['$event'])
     handleKeyboardEvent(event: KeyboardEvent) {
         const target = event.target as HTMLElement;
@@ -206,6 +214,53 @@ export class DashboardComponent implements OnInit {
     }
 
     onSearch(): void {
+        this.filterDocuments();
+    }
+
+    toggleFilters(): void {
+        this.showFilters = !this.showFilters;
+    }
+
+    applyFilters(): void {
+        let filtered = this.documents;
+
+        // File type filter
+        if (this.selectedFileType) {
+            filtered = filtered.filter(doc => {
+                const ext = doc.title.split('.').pop()?.toLowerCase();
+                return ext === this.selectedFileType.toLowerCase();
+            });
+        }
+
+        // Date range filter
+        if (this.dateFrom) {
+            const fromDate = new Date(this.dateFrom);
+            filtered = filtered.filter(doc => new Date(doc.createdAt) >= fromDate);
+        }
+        if (this.dateTo) {
+            const toDate = new Date(this.dateTo);
+            filtered = filtered.filter(doc => new Date(doc.createdAt) <= toDate);
+        }
+
+        // Size filter (in bytes)
+        if (this.minSize) {
+            const minBytes = parseInt(this.minSize) * 1024 * 1024; // Convert MB to bytes
+            filtered = filtered.filter(doc => (doc.fileSize || 0) >= minBytes);
+        }
+        if (this.maxSize) {
+            const maxBytes = parseInt(this.maxSize) * 1024 * 1024;
+            filtered = filtered.filter(doc => (doc.fileSize || 0) <= maxBytes);
+        }
+
+        this.filteredDocuments = filtered;
+    }
+
+    clearFilters(): void {
+        this.selectedFileType = '';
+        this.dateFrom = '';
+        this.dateTo = '';
+        this.minSize = '';
+        this.maxSize = '';
         this.filterDocuments();
     }
 
