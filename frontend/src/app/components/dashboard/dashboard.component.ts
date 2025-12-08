@@ -154,10 +154,10 @@ export class DashboardComponent implements OnInit {
             filtered = filtered.filter(doc => doc.isStarred);
         } else if (this.currentView === 'recent') {
             filtered = filtered.filter(doc => {
-                return doc.accessLog?.some((log: any) => log.viewedBy === this.currentUser._id);
+                return doc.accessLog?.some((log: any) => log.viewedBy?.toString() === this.currentUser._id?.toString());
             }).sort((a, b) => {
                 const getLastView = (doc: Document) => {
-                    const logs = doc.accessLog?.filter((log: any) => log.viewedBy === this.currentUser._id) || [];
+                    const logs = doc.accessLog?.filter((log: any) => log.viewedBy?.toString() === this.currentUser._id?.toString()) || [];
                     if (logs.length === 0) return 0;
                     return new Date(logs[logs.length - 1].viewedAt).getTime();
                 };
