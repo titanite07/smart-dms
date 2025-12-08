@@ -34,15 +34,31 @@ import { AuthService } from '../../services/auth.service';
 
         <!-- Content -->
         <div class="flex-1 bg-gray-100 flex items-center justify-center relative">
+
           <div *ngIf="loading" class="absolute inset-0 flex items-center justify-center bg-white z-10">
              <div class="animate-spin rounded-full h-12 w-12 border-4 border-indigo-600 border-t-transparent"></div>
           </div>
 
-          <iframe 
-            *ngIf="fileUrl" 
-            [src]="fileUrl" 
-            class="w-full h-full border-0"
-            (load)="onIframeLoad()">
+          <!-- Video Player -->
+          <video *ngIf="fileType === 'video' && fileUrl" [src]="fileUrl" controls class="max-w-full max-h-full"
+            (loadeddata)="onIframeLoad()">
+            Your browser does not support the video tag.
+          </video>
+
+          <!-- Audio Player -->
+          <div *ngIf="fileType === 'audio' && fileUrl" class="w-full max-w-2xl">
+            <audio [src]="fileUrl" controls class="w-full" (loadeddata)="onIframeLoad()">
+              Your browser does not support the audio tag.
+            </audio>
+          </div>
+
+          <!-- Image -->
+          <img *ngIf="fileType === 'image' && fileUrl" [src]="fileUrl" class="max-w-full max-h-full object-contain"
+            (load)="onIframeLoad()" alt="{{ document?.title }}" />
+
+          <!-- PDF/Other (iframe) -->
+          <iframe *ngIf="(fileType === 'pdf' || fileType === 'other') && fileUrl" [src]="fileUrl"
+            class="w-full h-full border-0" (load)="onIframeLoad()">
           </iframe>
           
           <div *ngIf="error" class="text-red-500 px-4 text-center">
@@ -60,6 +76,7 @@ export class PreviewModalComponent implements OnChanges {
     fileUrl: SafeResourceUrl | null = null;
     loading = false;
     error = '';
+    fileType: 'pdf' | 'image' | 'video' | 'audio' | 'other' = 'other';
 
     constructor(
         private http: HttpClient,
@@ -69,9 +86,28 @@ export class PreviewModalComponent implements OnChanges {
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes['document'] && this.document) {
+            this.detectFileType();
             this.loadFile();
         }
     }
+
+    detectFileType() {
+        if (!this.document) return;
+        const ext = this.document.title.split('.').pop()?.toLowerCase();
+
+        if (['mp4', 'webm', 'ogg', 'avi', 'mov'].includes(ext || '')) {
+            this.fileType = 'video';
+        } else if (['mp3', 'wav', 'ogg', 'm4a'].includes(ext || '')) {
+            this.fileType = 'audio';
+        } else if (['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'].includes(ext || '')) {
+            this.fileType = 'image';
+        } else if (ext === 'pdf') {
+            this.fileType = 'pdf';
+        } else {
+            this.fileType = 'other';
+        }
+    }
+
 
     loadFile() {
         if (!this.document) return;
