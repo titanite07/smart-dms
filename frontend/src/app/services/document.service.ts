@@ -9,6 +9,8 @@ export interface Document {
     tags: string[];
     owner: any;
     currentPath: string;
+    fileSize: number;
+    mimeType?: string;
     currentVersion: number;
     versions: any[];
     sharedWith: any[];
