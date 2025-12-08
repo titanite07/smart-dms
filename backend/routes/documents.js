@@ -33,7 +33,7 @@ router.post('/:id/share', protect, shareDocument);
 router.post('/:id/public-link', protect, createPublicLink);
 router.delete('/:id/public-link', protect, revokePublicLink);
 router.get('/:id/versions', protect, getVersions);
-router.get('/:id/download', downloadFile);
+router.get('/:id/download', protect, downloadFile);
 router.put('/:id/star', protect, toggleStar);
 router.put('/:id/move', protect, moveDocument);
 router.put('/:id/restore', protect, restoreDocument);
