@@ -163,49 +163,92 @@ export class DocumentListComponent {
             ? `Permanently delete ${this.selectedItems.size} item(s)? This cannot be undone.`
             : `Delete ${this.selectedItems.size} item(s)?`;
         if (!confirm(message)) return;
-        const deletePromises: any[] = [];
+        const deleteObservables: any[] = [];
         this.selectedItems.forEach(id => {
             const doc = this.documents.find(d => d._id === id);
             const folder = this.folders.find(f => f._id === id);
             if (doc) {
-                const promise = this.isTrashView
+                const obs = this.isTrashView
                     ? this.documentService.permanentDelete(id)
                     : this.documentService.deleteDocument(id);
-                deletePromises.push(promise.toPromise());
+                deleteObservables.push(obs);
             }
             if (folder) {
-                const promise = this.isTrashView
+                const obs = this.isTrashView
                     ? this.folderService.permanentDeleteFolder(id)
                     : this.folderService.deleteFolder(id);
-                deletePromises.push(promise.toPromise());
+                deleteObservables.push(obs);
             }
         });
-        Promise.all(deletePromises).then(() => {
-            this.selectedItems.clear();
-            this.selectAll = false;
-            this.selectionMode = false;
-            this.refresh.emit();
-        }).catch(err => {
-            console.error('Delete failed:', err);
-            alert('Some items failed to delete');
+        if (deleteObservables.length === 0) return;
+        let completed = 0;
+        let failed = 0;
+        deleteObservables.forEach(obs => {
+            obs.subscribe({
+                next: () => {
+                    completed++;
+                    if (completed + failed === deleteObservables.length) {
+                        this.selectedItems.clear();
+                        this.selectAll = false;
+                        this.selectionMode = false;
+                        this.refresh.emit();
+                        if (failed > 0) {
+                            alert(`${failed} item(s) failed to delete`);
+                        }
+                    }
+                },
+                error: (err: any) => {
+                    console.error('Delete failed:', err);
+                    failed++;
+                    if (completed + failed === deleteObservables.length) {
+                        this.selectedItems.clear();
+                        this.selectAll = false;
+                        this.selectionMode = false;
+                        this.refresh.emit();
+                        if (failed > 0) {
+                            alert(`${failed} item(s) failed to delete`);
+                        }
+                    }
+                }
+            });
         });
     }
     deleteAllInTrash(): void {
         const totalItems = this.documents.length + this.folders.length;
         if (totalItems === 0) return;
         if (!confirm(`Permanently delete ALL ${totalItems} item(s) in trash? This cannot be undone.`)) return;
-        const deletePromises: any[] = [];
+        const deleteObservables: any[] = [];
         this.documents.forEach(doc => {
-            deletePromises.push(this.documentService.permanentDelete(doc._id).toPromise());
+            deleteObservables.push(this.documentService.permanentDelete(doc._id));
         });
         this.folders.forEach(folder => {
-            deletePromises.push(this.folderService.permanentDeleteFolder(folder._id).toPromise());
+            deleteObservables.push(this.folderService.permanentDeleteFolder(folder._id));
         });
-        Promise.all(deletePromises).then(() => {
-            this.refresh.emit();
-        }).catch(err => {
-            console.error('Delete all failed:', err);
-            alert('Some items failed to delete');
+        if (deleteObservables.length === 0) return;
+        let completed = 0;
+        let failed = 0;
+        deleteObservables.forEach(obs => {
+            obs.subscribe({
+                next: () => {
+                    completed++;
+                    if (completed + failed === deleteObservables.length) {
+                        this.refresh.emit();
+                        if (failed > 0) {
+                            alert(`${failed} item(s) failed to delete`);
+                        }
+                    }
+                },
+                error: (err: any) => {
+                    console.error('Delete failed:', err);
+                    failed++;
+                    if (completed + failed === deleteObservables.length) {
+                        this.refresh.emit();
+                        if (failed > 0) {
+                            alert(`${failed} item(s) failed to delete`);
+                        }
+                    }
+                }
+            });
         });
     }
     draggedDocId: string | null = null;
