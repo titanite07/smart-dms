@@ -306,7 +306,8 @@ export class DashboardComponent implements OnInit {
                 const fileEntry = entry as FileSystemFileEntry;
                 const file = await this.getFileFromEntry(fileEntry);
                 if (file) {
-                    await this.documentService.uploadDocument(file, file.name, '', parentFolderId).toPromise();
+                    const tags = this.documentService.generateTags(file);
+                    await this.documentService.uploadDocument(file, file.name, tags, parentFolderId).toPromise();
                 }
             }
         }

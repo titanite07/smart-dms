@@ -39,6 +39,47 @@ export class DocumentService {
         });
     }
 
+    private stopWords = new Set([
+        'the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for',
+        'of', 'with', 'by', 'from', 'as', 'is', 'was', 'are', 'were', 'been',
+        'be', 'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would',
+        'could', 'should', 'may', 'might', 'can', 'this', 'that', 'these',
+        'those', 'it', 'its', 'file', 'document', 'copy', 'new', 'final', 'v1', 'v2'
+    ]);
+
+    generateTags(file: File, title?: string): string {
+        const tags: Set<string> = new Set();
+        const fileName = title || file.name;
+
+        // Get file extension as tag
+        const ext = file.name.split('.').pop()?.toLowerCase();
+        if (ext) {
+            const typeMap: { [key: string]: string } = {
+                'pdf': 'PDF', 'doc': 'Word', 'docx': 'Word', 'xls': 'Excel',
+                'xlsx': 'Excel', 'ppt': 'PowerPoint', 'pptx': 'PowerPoint',
+                'jpg': 'Image', 'jpeg': 'Image', 'png': 'Image', 'gif': 'Image',
+                'mp4': 'Video', 'mov': 'Video', 'mp3': 'Audio',
+                'txt': 'Text', 'csv': 'Data', 'zip': 'Archive', 'rar': 'Archive'
+            };
+            if (typeMap[ext]) tags.add(typeMap[ext]);
+        }
+
+        // Extract keywords from filename
+        const nameWithoutExt = fileName.replace(/\.[^/.]+$/, '');
+        const words = nameWithoutExt
+            .replace(/[-_]/g, ' ')
+            .replace(/([a-z])([A-Z])/g, '$1 $2')
+            .split(/\s+/)
+            .map(w => w.toLowerCase().trim())
+            .filter(w => w.length > 2 && !this.stopWords.has(w));
+
+        words.slice(0, 5).forEach(word => {
+            tags.add(word.charAt(0).toUpperCase() + word.slice(1));
+        });
+
+        return Array.from(tags).slice(0, 6).join(', ');
+    }
+
     uploadDocument(file: File, title: string, tags: string, parentFolder?: string | null): Observable<Document> {
         const formData = new FormData();
         formData.append('file', file);

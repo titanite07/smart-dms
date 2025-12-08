@@ -40,7 +40,7 @@ export class UploadModalComponent implements OnInit {
 
             if (this.selectedFiles.length === 1) {
                 this.title = this.selectedFiles[0].name;
-                this.tags = this.generateTags(this.selectedFiles[0]);
+                this.tags = this.documentService.generateTags(this.selectedFiles[0]);
             } else {
                 this.title = `${this.selectedFiles.length} files selected`;
                 this.tags = this.generateTagsFromMultipleFiles(this.selectedFiles);
@@ -48,55 +48,10 @@ export class UploadModalComponent implements OnInit {
         }
     }
 
-    generateTags(file: File): string {
-        const tags: Set<string> = new Set();
-
-        // Get file extension as tag
-        const ext = file.name.split('.').pop()?.toLowerCase();
-        if (ext) {
-            const typeMap: { [key: string]: string } = {
-                'pdf': 'PDF',
-                'doc': 'Word',
-                'docx': 'Word',
-                'xls': 'Excel',
-                'xlsx': 'Excel',
-                'ppt': 'PowerPoint',
-                'pptx': 'PowerPoint',
-                'jpg': 'Image',
-                'jpeg': 'Image',
-                'png': 'Image',
-                'gif': 'Image',
-                'mp4': 'Video',
-                'mov': 'Video',
-                'mp3': 'Audio',
-                'txt': 'Text',
-                'csv': 'Data',
-                'zip': 'Archive',
-                'rar': 'Archive'
-            };
-            if (typeMap[ext]) tags.add(typeMap[ext]);
-        }
-
-        // Extract keywords from filename
-        const nameWithoutExt = file.name.replace(/\.[^/.]+$/, '');
-        const words = nameWithoutExt
-            .replace(/[-_]/g, ' ')
-            .replace(/([a-z])([A-Z])/g, '$1 $2')
-            .split(/\s+/)
-            .map(w => w.toLowerCase().trim())
-            .filter(w => w.length > 2 && !this.stopWords.has(w));
-
-        words.slice(0, 5).forEach(word => {
-            tags.add(word.charAt(0).toUpperCase() + word.slice(1));
-        });
-
-        return Array.from(tags).slice(0, 6).join(', ');
-    }
-
     generateTagsFromMultipleFiles(files: File[]): string {
         const allTags: Set<string> = new Set();
         files.forEach(file => {
-            const fileTags = this.generateTags(file).split(', ');
+            const fileTags = this.documentService.generateTags(file).split(', ');
             fileTags.forEach(t => allTags.add(t));
         });
         return Array.from(allTags).slice(0, 6).join(', ');
@@ -108,7 +63,7 @@ export class UploadModalComponent implements OnInit {
             this.selectedFiles = Array.from(files);
             if (this.selectedFiles.length === 1) {
                 if (!this.title) this.title = this.selectedFiles[0].name;
-                this.tags = this.generateTags(this.selectedFiles[0]);
+                this.tags = this.documentService.generateTags(this.selectedFiles[0]);
             } else {
                 this.title = `${this.selectedFiles.length} files selected`;
                 this.tags = this.generateTagsFromMultipleFiles(this.selectedFiles);
@@ -119,30 +74,7 @@ export class UploadModalComponent implements OnInit {
 
     onTitleChange(): void {
         if (this.selectedFiles.length === 1) {
-            // Regenerate tags when title changes
-            const file = this.selectedFiles[0];
-            const ext = file.name.split('.').pop()?.toLowerCase();
-            const typeMap: { [key: string]: string } = {
-                'pdf': 'PDF', 'doc': 'Word', 'docx': 'Word', 'xls': 'Excel',
-                'xlsx': 'Excel', 'jpg': 'Image', 'png': 'Image', 'mp4': 'Video'
-            };
-
-            const tags: Set<string> = new Set();
-            if (ext && typeMap[ext]) tags.add(typeMap[ext]);
-
-            const words = this.title
-                .replace(/\.[^/.]+$/, '')
-                .replace(/[-_]/g, ' ')
-                .replace(/([a-z])([A-Z])/g, '$1 $2')
-                .split(/\s+/)
-                .map(w => w.toLowerCase().trim())
-                .filter(w => w.length > 2 && !this.stopWords.has(w));
-
-            words.slice(0, 5).forEach(word => {
-                tags.add(word.charAt(0).toUpperCase() + word.slice(1));
-            });
-
-            this.tags = Array.from(tags).slice(0, 6).join(', ');
+            this.tags = this.documentService.generateTags(this.selectedFiles[0], this.title);
         }
     }
 
