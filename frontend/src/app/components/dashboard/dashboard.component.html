@@ -269,6 +269,41 @@
                 </div>
             </div>
 
+            <!-- Analytics Widget -->
+            <div *ngIf="analytics && currentView === 'all'"
+                class="mb-6 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-slate-800 dark:to-slate-800/50 rounded-2xl p-6 border border-blue-100 dark:border-slate-700">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                        <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
+                            </path>
+                        </svg>
+                        Storage Analytics
+                    </h3>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="bg-white dark:bg-slate-700 rounded-xl p-4">
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white">{{analytics.totalSizeMB}}</div>
+                        <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">MB Used</div>
+                    </div>
+                    <div class="bg-white dark:bg-slate-700 rounded-xl p-4">
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white">{{analytics.totalDocuments}}</div>
+                        <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">Total Files</div>
+                    </div>
+                    <div class="bg-white dark:bg-slate-700 rounded-xl p-4 col-span-2">
+                        <div class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">File Types</div>
+                        <div class="flex flex-wrap gap-2">
+                            <div *ngFor="let type of analytics.fileTypes | keyvalue"
+                                class="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 rounded text-xs font-medium">
+                                {{type.key}}: {{type.value.count}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Content Area -->
             <div *ngIf="loading" class="flex justify-center py-24">
                 <div class="flex flex-col items-center gap-4">
