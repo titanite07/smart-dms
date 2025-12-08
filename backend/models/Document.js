@@ -116,7 +116,7 @@ const documentSchema = new mongoose.Schema({
 documentSchema.index({ title: 'text', tags: 'text' });
 documentSchema.index({ owner: 1 });
 documentSchema.index({ parentFolder: 1 });
-documentSchema.index({ 'publicLink.token': 1 });
+
 
 documentSchema.methods.generatePublicLink = function () {
     this.publicLink.token = crypto.randomBytes(32).toString('hex');
