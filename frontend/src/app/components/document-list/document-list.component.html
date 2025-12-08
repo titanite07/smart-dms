@@ -1,11 +1,11 @@
 ﻿<div class="w-full overflow-hidden">
     <div *ngIf="(documents.length > 0 || folders.length > 0)"
-        class="mb-4 flex items-center justify-between bg-gray-50 px-4 py-3 rounded-lg">
+        class="mb-4 flex items-center justify-between bg-slate-800/50 border border-slate-700/50 px-4 py-3 rounded-lg">
         <div class="flex items-center gap-4">
             <button (click)="toggleSelectionMode()" [class.bg-indigo-600]="selectionMode"
-                [class.text-white]="selectionMode" [class.bg-white]="!selectionMode"
-                [class.text-gray-700]="!selectionMode"
-                class="px-4 py-2 rounded-lg border border-gray-300 font-medium text-sm transition-all flex items-center gap-2">
+                [class.text-white]="selectionMode" [class.bg-slate-700]="!selectionMode"
+                [class.text-gray-200]="!selectionMode"
+                class="px-4 py-2 rounded-lg border border-slate-600 hover:border-indigo-500 font-medium text-sm transition-all flex items-center gap-2 shadow-sm">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4">
@@ -15,17 +15,17 @@
             </button>
             <div *ngIf="selectionMode" class="flex items-center gap-2">
                 <input type="checkbox" [checked]="selectAll" (change)="toggleSelectAll()"
-                    class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
-                <span class="text-sm text-gray-600">Select All</span>
+                    class="w-4 h-4 text-indigo-600 bg-slate-700 border-slate-600 rounded focus:ring-indigo-500 focus:ring-offset-slate-800">
+                <span class="text-sm text-gray-300">Select All</span>
                 <span *ngIf="selectedItems.size > 0"
-                    class="ml-2 px-2 py-1 bg-indigo-100 text-indigo-700 rounded text-xs font-medium">
+                    class="ml-2 px-2 py-1 bg-indigo-600/30 text-indigo-300 rounded text-xs font-medium border border-indigo-500/30">
                     {{selectedItems.size}} selected
                 </span>
             </div>
         </div>
         <div class="flex items-center gap-2">
             <button *ngIf="selectionMode && selectedItems.size > 0" (click)="deleteAllSelected()"
-                class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium text-sm transition-all flex items-center gap-2">
+                class="px-4 py-2 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white rounded-lg font-medium text-sm transition-all shadow-md hover:shadow-xl flex items-center gap-2">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
