@@ -7,10 +7,11 @@ import { PreviewModalComponent } from '../preview-modal/preview-modal.component'
 import { VersionHistoryComponent } from '../version-history/version-history.component';
 import { CommentsComponent } from '../comments/comments.component';
 import { PublicLinkModalComponent } from '../public-link-modal/public-link-modal.component';
+import { FileSizePipe } from '../../pipes/file-size.pipe';
 @Component({
     selector: 'app-document-list',
     standalone: true,
-    imports: [CommonModule, FormsModule, PreviewModalComponent, VersionHistoryComponent, CommentsComponent, PublicLinkModalComponent],
+    imports: [CommonModule, FormsModule, PreviewModalComponent, VersionHistoryComponent, CommentsComponent, PublicLinkModalComponent, FileSizePipe],
     templateUrl: './document-list.component.html'
 })
 export class DocumentListComponent {
