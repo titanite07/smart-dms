@@ -6,10 +6,10 @@ import { Document } from '../../services/document.service';
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../../services/auth.service';
 @Component({
-    selector: 'app-preview-modal',
-    standalone: true,
-    imports: [CommonModule],
-    template: `
+  selector: 'app-preview-modal',
+  standalone: true,
+  imports: [CommonModule],
+  template: `
     <div class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4" (click)="close.emit()">
       <div class="bg-white rounded-xl shadow-2xl w-full max-w-5xl h-[90vh] flex flex-col overflow-hidden" (click)="$event.stopPropagation()">
         <!-- Header -->
@@ -49,58 +49,59 @@ import { AuthService } from '../../services/auth.service';
   `
 })
 export class PreviewModalComponent implements OnChanges {
-    @Input() document: Document | null = null;
-    @Output() close = new EventEmitter<void>();
-    fileUrl: SafeResourceUrl | null = null;
-    loading = false;
-    error = '';
-    constructor(
-        private http: HttpClient,
-        private sanitizer: DomSanitizer,
-        private authService: AuthService
-    ) { }
-    ngOnChanges(changes: SimpleChanges): void {
-        if (changes['document'] && this.document) {
-            this.loadFile();
-        }
+  @Input() document: Document | null = null;
+  @Output() close = new EventEmitter<void>();
+  fileUrl: SafeResourceUrl | null = null;
+  loading = false;
+  error = '';
+  constructor(
+    private http: HttpClient,
+    private sanitizer: DomSanitizer,
+    private authService: AuthService
+  ) { }
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['document'] && this.document) {
+      this.loadFile();
     }
-    loadFile() {
-        if (!this.document) return;
-        this.loading = true;
-        this.error = '';
-        this.fileUrl = null;
-        const token = this.authService.getToken();
-        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-        const url = `${environment.apiUrl}/documents/${this.document._id}/download?inline=true`;
-        this.http.get(url, { headers, responseType: 'blob' }).subscribe({
-            next: (blob) => {
-                const objectUrl = URL.createObjectURL(blob);
-                this.fileUrl = this.sanitizer.bypassSecurityTrustResourceUrl(objectUrl);
-            },
-            error: (err) => {
-                console.error('Error loading preview:', err);
-                this.error = 'Failed to load document preview.';
-                this.loading = false;
-            }
-        });
-    }
-    onIframeLoad() {
+  }
+  loadFile() {
+    if (!this.document) return;
+    this.loading = true;
+    this.error = '';
+    this.fileUrl = null;
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    const url = `${environment.apiUrl}/documents/${this.document._id}/download?inline=true`;
+    this.http.get(url, { headers, responseType: 'blob' }).subscribe({
+      next: (blob) => {
+        const objectUrl = URL.createObjectURL(blob);
+        this.fileUrl = this.sanitizer.bypassSecurityTrustResourceUrl(objectUrl);
         this.loading = false;
-    }
-    download() {
-        if (!this.document) return;
-        const token = this.authService.getToken();
-        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-        const downloadUrl = `${environment.apiUrl}/documents/${this.document._id}/download`;
-        this.http.get(downloadUrl, { headers, responseType: 'blob' }).subscribe({
-            next: (blob) => {
-                const a = window.document.createElement('a');
-                const objectUrl = URL.createObjectURL(blob);
-                a.href = objectUrl;
-                a.download = this.document?.title || 'document';
-                a.click();
-                URL.revokeObjectURL(objectUrl);
-            }
-        });
-    }
+      },
+      error: (err) => {
+        console.error('Error loading preview:', err);
+        this.error = 'Failed to load document preview.';
+        this.loading = false;
+      }
+    });
+  }
+  onIframeLoad() {
+    this.loading = false;
+  }
+  download() {
+    if (!this.document) return;
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    const downloadUrl = `${environment.apiUrl}/documents/${this.document._id}/download`;
+    this.http.get(downloadUrl, { headers, responseType: 'blob' }).subscribe({
+      next: (blob) => {
+        const a = window.document.createElement('a');
+        const objectUrl = URL.createObjectURL(blob);
+        a.href = objectUrl;
+        a.download = this.document?.title || 'document';
+        a.click();
+        URL.revokeObjectURL(objectUrl);
+      }
+    });
+  }
 }
