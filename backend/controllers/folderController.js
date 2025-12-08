@@ -30,15 +30,28 @@ const getFolderContents = async (req, res) => {
             isDeleted: { $ne: true }
         }).populate('owner', 'name email');
 
-        const documents = await Document.find({
+        const ownedDocs = await Document.find({
             owner: req.user._id,
             parentFolder: currentFolderId,
             isDeleted: { $ne: true }
         }).populate('owner', 'name email');
 
-        const mappedDocs = documents.map(doc => {
+        let sharedDocs = [];
+        if (!currentFolderId) {
+            // If at root, also fetch documents shared with the user
+            sharedDocs = await Document.find({
+                'sharedWith.user': req.user._id,
+                isDeleted: { $ne: true }
+            }).populate('owner', 'name email');
+        }
+
+        const allDocs = [...ownedDocs, ...sharedDocs];
+
+        const mappedDocs = allDocs.map(doc => {
             const docObj = doc.toObject();
             docObj.isStarred = doc.starredBy && doc.starredBy.some(id => id.toString() === req.user._id.toString());
+            // Mark as shared if owner is different (frontend handles this too, but good for clarity)
+            docObj.isShared = doc.owner._id.toString() !== req.user._id.toString();
             return docObj;
         });
 
