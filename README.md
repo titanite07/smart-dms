@@ -2,7 +2,7 @@
 
 A modern, feature-rich Document Management System (DMS) built with Angular and Node.js. TechVault provides enterprise-grade document management with real-time collaboration, version control, and advanced sharing capabilities.
 
-![TechVault Banner](./Captures/landing-page.png)
+![TechVault Banner](./DMS%20Captures/Landing%20Page.png)
 
 ## 🚀 Features
 
@@ -168,79 +168,76 @@ npm start
 ## 📸 Screenshots
 
 ### Landing Page
-![Landing Page](./Captures/landing-page.png)
+![Landing Page](./DMS%20Captures/Landing%20Page.png)
 Beautiful landing page with modern design and call-to-action.
 
 ### Login & Signup
-![Login](./Captures/login.png)
-Secure authentication with email verification.
+![Login](./DMS%20Captures/Login%20Page.png)
+Secure authentication with email verification and red theme.
+
+![Signup](./DMS%20Captures/Signup%20Page.png)
+Signup page with password requirements and email availability check.
 
 ### Dashboard - All Files
-![Dashboard](./Captures/dashboard-all-files.png)
+![Dashboard](./DMS%20Captures/Home%20Page.png)
 Main dashboard showing all documents and folders.
 
 ### Upload Files & Folders
-![Upload](./Captures/upload-modal.png)
+![Upload](./DMS%20Captures/Upload%20Document.png)
 Drag-and-drop upload with auto-tagging.
 
-![Upload Progress](./Captures/upload-progress.png)
-Real-time upload progress indicator.
+![Upload Progress](./DMS%20Captures/Upload%20Progress.png)
+Real-time upload progress indicator for large folder uploads.
 
 ### Document Preview
-![Preview](./Captures/document-preview.png)
+![Preview](./DMS%20Captures/PDF%20Preview.png)
 In-app document preview for PDFs and images.
 
 ### Version History
-![Version History](./Captures/version-history.png)
+![Version History](./DMS%20Captures/Version%20History.png)
 GitHub-style version timeline with commit graph.
 
 ### Share with Users
-![Share Modal](./Captures/share-modal.png)
-Share documents with specific users.
+![Share Modal](./DMS%20Captures/Share%20Link.png)
+Share documents with specific users and public link generation.
 
 ### Public Link Generation
-![Public Link](./Captures/public-link.png)
-Generate shareable public links with password protection.
-
-### Public View
-![Public View](./Captures/public-view.png)
-Beautiful public document viewing page.
+### Folder Contents
+![Folder](./DMS%20Captures/Contents%20within%20Folder.png)
+Navigate through folder structures with nested documents.
 
 ### Comments
-![Comments](./Captures/comments-panel.png)
+![Comments](./DMS%20Captures/Comments.png)
 Add comments and discussions on documents.
 
 ### Starred Files
-![Starred](./Captures/starred-view.png)
+![Starred](./DMS%20Captures/Star1.png)
 Quick access to favorite documents.
 
+![Starred Details](./DMS%20Captures/Star2.png)
+Starred documents with detailed view.
+
 ### Recent Activity
-![Recent](./Captures/recent-activity.png)
+![Recent](./DMS%20Captures/Recent%20Activity.png)
 View recently accessed documents.
 
 ### Shared Files
-![Shared](./Captures/shared-view.png)
+![Shared](./DMS%20Captures/Shared%20PAge.png)
 Documents shared with you by others.
 
 ### Trash & Recovery
-![Trash](./Captures/trash-view.png)
+![Trash](./DMS%20Captures/Trash%20Page.png)
 Recover deleted documents and folders.
 
 ### Admin Dashboard
-![Admin Dashboard](./Captures/admin-dashboard.png)
-System statistics and monitoring.
-
-### User Management
-![User Management](./Captures/user-management.png)
-Manage users, roles, and storage quotas.
-
-### Storage Analytics
-![Storage Bar](./Captures/storage-bar.png)
-Real-time storage usage tracking.
+### Activity Log
+![Activity Log](./DMS%20Captures/Activity%20Log.png)
+Track all user activities and document access logs.
 
 ### Dark Mode
-![Dark Mode](./Captures/dark-mode.png)
-Beautiful dark theme support throughout the app.
+### Light Theme
+![Light Mode](./DMS%20Captures/Light%20Theme%20Page.png)
+Clean and modern light theme interface.
 
 ## 🏗️ Project Structure
 
@@ -262,7 +259,7 @@ smart-dms/
 │   │   │   └── guards/     # Route guards
 │   │   └── environments/   # Environment configs
 │   └── angular.json        # Angular configuration
-├── Captures/               # Screenshots for documentation
+├── DMS Captures/           # Screenshots for documentation
 ├── package.json            # Root package (build scripts)
 └── README.md              # This file
 ```
