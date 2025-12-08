@@ -176,4 +176,31 @@ export class DocumentService {
         const versionParam = version ? `?version=${version}` : '';
         return `${this.apiUrl}/${documentId}/download${versionParam}`;
     }
+
+    // New Features - Quick Wins
+    getDuplicates(): Observable<any[]> {
+        return this.http.get<any[]>(`${this.apiUrl}/duplicates`, {
+            headers: this.getHeaders()
+        });
+    }
+
+    bulkDelete(documentIds: string[]): Observable<any> {
+        return this.http.post(`${this.apiUrl}/bulk-delete`,
+            { documentIds },
+            { headers: this.getHeaders() }
+        );
+    }
+
+    bulkMove(documentIds: string[], targetFolderId: string | null): Observable<any> {
+        return this.http.post(`${this.apiUrl}/bulk-move`,
+            { documentIds, targetFolderId },
+            { headers: this.getHeaders() }
+        );
+    }
+
+    getAnalytics(): Observable<any> {
+        return this.http.get(`${this.apiUrl}/analytics`, {
+            headers: this.getHeaders()
+        });
+    }
 }

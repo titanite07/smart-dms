@@ -35,6 +35,11 @@ export class DashboardComponent implements OnInit {
     uploadedCount = 0;
     totalUploadCount = 0;
 
+    // Analytics
+    analytics: any = null;
+    showDuplicatesModal = false;
+    duplicates: any[] = [];
+
     @HostListener('document:keydown', ['$event'])
     handleKeyboardEvent(event: KeyboardEvent) {
         const target = event.target as HTMLElement;
@@ -73,6 +78,30 @@ export class DashboardComponent implements OnInit {
         });
         this.initializeTheme();
         this.loadContent();
+        this.loadAnalytics();
+    }
+
+    loadAnalytics(): void {
+        this.documentService.getAnalytics().subscribe({
+            next: (data) => {
+                this.analytics = data;
+            },
+            error: (err) => console.error('Analytics error:', err)
+        });
+    }
+
+    findDuplicates(): void {
+        this.documentService.getDuplicates().subscribe({
+            next: (data) => {
+                this.duplicates = data;
+                this.showDuplicatesModal = true;
+            },
+            error: (err) => console.error('Duplicates error:', err)
+        });
+    }
+
+    closeDuplicatesModal(): void {
+        this.showDuplicatesModal = false;
     }
 
     loadContent(): void {
