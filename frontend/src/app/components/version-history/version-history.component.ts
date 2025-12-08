@@ -1,7 +1,6 @@
-import { Component, Input, Output, EventEmitter, OnInit, OnChanges } from '@angular/core';
+﻿import { Component, Input, Output, EventEmitter, OnInit, OnChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Document, DocumentService } from '../../services/document.service';
-
 interface Version {
     _id: string;
     versionNumber: number;
@@ -9,12 +8,10 @@ interface Version {
     uploadedAt: string;
     size?: number;
 }
-
 interface VersionData {
     current: Version;
     versions: Version[];
 }
-
 @Component({
     selector: 'app-version-history',
     standalone: true,
@@ -26,32 +23,25 @@ export class VersionHistoryComponent implements OnInit, OnChanges {
     @Input() isOwner: boolean = false;
     @Output() close = new EventEmitter<void>();
     @Output() refresh = new EventEmitter<void>();
-
     versions: VersionData | null = null;
     allVersions: Version[] = [];
     loading = true;
     uploadingVersion = false;
     error = '';
     animationStarted = false;
-
     constructor(private documentService: DocumentService) { }
-
     ngOnInit(): void {
         this.loadVersions();
     }
-
     ngOnChanges(): void {
         if (this.document) {
             this.loadVersions();
         }
     }
-
     loadVersions(): void {
         if (!this.document) return;
-
         this.loading = true;
         this.animationStarted = false;
-
         this.documentService.getVersions(this.document._id).subscribe({
             next: (data) => {
                 this.versions = data;
@@ -67,7 +57,6 @@ export class VersionHistoryComponent implements OnInit, OnChanges {
             }
         });
     }
-
     combineVersions(data: VersionData): Version[] {
         const all: Version[] = [];
         if (data.current) {
@@ -78,11 +67,9 @@ export class VersionHistoryComponent implements OnInit, OnChanges {
         }
         return all;
     }
-
     getAnimationDelay(index: number): string {
         return `${index * 150}ms`;
     }
-
     getNodeColor(index: number, total: number): string {
         if (index === 0) return 'from-emerald-400 to-green-500';
         const colors = [
@@ -94,7 +81,6 @@ export class VersionHistoryComponent implements OnInit, OnChanges {
         ];
         return colors[(index - 1) % colors.length];
     }
-
     getCommitHash(): string {
         const chars = '0123456789abcdef';
         let hash = '';
@@ -103,14 +89,12 @@ export class VersionHistoryComponent implements OnInit, OnChanges {
         }
         return hash;
     }
-
     formatFileSize(bytes: number | undefined): string {
         if (!bytes) return 'Unknown size';
         if (bytes < 1024) return bytes + ' B';
         if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
         return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
     }
-
     getRelativeTime(dateString: string): string {
         const date = new Date(dateString);
         const now = new Date();
@@ -121,7 +105,6 @@ export class VersionHistoryComponent implements OnInit, OnChanges {
         const diffDays = Math.floor(diffHours / 24);
         const diffWeeks = Math.floor(diffDays / 7);
         const diffMonths = Math.floor(diffDays / 30);
-
         if (diffSecs < 60) return 'just now';
         if (diffMins < 60) return `${diffMins} minute${diffMins > 1 ? 's' : ''} ago`;
         if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
@@ -129,17 +112,14 @@ export class VersionHistoryComponent implements OnInit, OnChanges {
         if (diffWeeks < 4) return `${diffWeeks} week${diffWeeks > 1 ? 's' : ''} ago`;
         return `${diffMonths} month${diffMonths > 1 ? 's' : ''} ago`;
     }
-
     downloadVersion(versionNumber: number): void {
         if (this.document) {
             const url = this.documentService.downloadFile(this.document._id, versionNumber);
             window.open(url, '_blank');
         }
     }
-
     deleteVersion(versionId: string): void {
         if (!confirm('Are you sure you want to delete this version?') || !this.document) return;
-
         this.documentService.deleteVersion(this.document._id, versionId).subscribe({
             next: () => {
                 this.loadVersions();
@@ -151,7 +131,6 @@ export class VersionHistoryComponent implements OnInit, OnChanges {
             }
         });
     }
-
     onVersionFileSelected(event: any): void {
         const file = event.target.files[0];
         if (file && this.document) {
@@ -170,7 +149,6 @@ export class VersionHistoryComponent implements OnInit, OnChanges {
             });
         }
     }
-
     closeModal(): void {
         this.close.emit();
     }

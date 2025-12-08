@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AdvancedService, StorageUsage } from '../../services/advanced.service';
-
 @Component({
     selector: 'app-storage-bar',
     standalone: true,
@@ -38,13 +37,10 @@ import { AdvancedService, StorageUsage } from '../../services/advanced.service';
 })
 export class StorageBarComponent implements OnInit {
     storage: StorageUsage | null = null;
-
     constructor(private advancedService: AdvancedService) { }
-
     ngOnInit(): void {
         this.loadStorage();
     }
-
     loadStorage(): void {
         this.advancedService.getStorageUsage().subscribe({
             next: (data) => {
@@ -53,11 +49,9 @@ export class StorageBarComponent implements OnInit {
             error: (err) => console.error('Failed to load storage:', err)
         });
     }
-
     getUsagePercent(): number {
         return parseFloat(this.storage?.usagePercent || '0');
     }
-
     formatBytes(bytes: number): string {
         if (bytes === 0) return '0 B';
         const k = 1024;

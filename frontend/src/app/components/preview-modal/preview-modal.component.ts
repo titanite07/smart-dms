@@ -1,11 +1,10 @@
-import { Component, EventEmitter, Input, Output, OnChanges, SimpleChanges } from '@angular/core';
+﻿import { Component, EventEmitter, Input, Output, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Document } from '../../services/document.service';
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../../services/auth.service';
-
 @Component({
     selector: 'app-preview-modal',
     standalone: true,
@@ -13,7 +12,6 @@ import { AuthService } from '../../services/auth.service';
     template: `
     <div class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4" (click)="close.emit()">
       <div class="bg-white rounded-xl shadow-2xl w-full max-w-5xl h-[90vh] flex flex-col overflow-hidden" (click)="$event.stopPropagation()">
-        
         <!-- Header -->
         <div class="flex justify-between items-center px-6 py-4 border-b border-gray-200 bg-gray-50">
           <h2 class="text-xl font-bold text-gray-800 truncate">{{ document?.title }}</h2>
@@ -31,20 +29,17 @@ import { AuthService } from '../../services/auth.service';
              </button>
           </div>
         </div>
-
         <!-- Content -->
         <div class="flex-1 bg-gray-100 flex items-center justify-center relative">
           <div *ngIf="loading" class="absolute inset-0 flex items-center justify-center bg-white z-10">
              <div class="animate-spin rounded-full h-12 w-12 border-4 border-indigo-600 border-t-transparent"></div>
           </div>
-
           <iframe 
             *ngIf="fileUrl" 
             [src]="fileUrl" 
             class="w-full h-full border-0"
             (load)="onIframeLoad()">
           </iframe>
-          
           <div *ngIf="error" class="text-red-500 px-4 text-center">
             {{ error }}
           </div>
@@ -56,39 +51,31 @@ import { AuthService } from '../../services/auth.service';
 export class PreviewModalComponent implements OnChanges {
     @Input() document: Document | null = null;
     @Output() close = new EventEmitter<void>();
-
     fileUrl: SafeResourceUrl | null = null;
     loading = false;
     error = '';
-
     constructor(
         private http: HttpClient,
         private sanitizer: DomSanitizer,
         private authService: AuthService
     ) { }
-
     ngOnChanges(changes: SimpleChanges): void {
         if (changes['document'] && this.document) {
             this.loadFile();
         }
     }
-
     loadFile() {
         if (!this.document) return;
-
         this.loading = true;
         this.error = '';
         this.fileUrl = null;
-
         const token = this.authService.getToken();
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
         const url = `${environment.apiUrl}/documents/${this.document._id}/download?inline=true`;
-
         this.http.get(url, { headers, responseType: 'blob' }).subscribe({
             next: (blob) => {
                 const objectUrl = URL.createObjectURL(blob);
                 this.fileUrl = this.sanitizer.bypassSecurityTrustResourceUrl(objectUrl);
-
             },
             error: (err) => {
                 console.error('Error loading preview:', err);
@@ -97,17 +84,14 @@ export class PreviewModalComponent implements OnChanges {
             }
         });
     }
-
     onIframeLoad() {
         this.loading = false;
     }
-
     download() {
         if (!this.document) return;
         const token = this.authService.getToken();
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
         const downloadUrl = `${environment.apiUrl}/documents/${this.document._id}/download`;
-
         this.http.get(downloadUrl, { headers, responseType: 'blob' }).subscribe({
             next: (blob) => {
                 const a = window.document.createElement('a');

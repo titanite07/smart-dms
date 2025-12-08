@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { AdvancedService, AdminDashboard, AdminUser } from '../../services/advanced.service';
-
 @Component({
     selector: 'app-admin-dashboard',
     standalone: true,
@@ -22,14 +21,11 @@ export class AdminDashboardComponent implements OnInit {
     totalPages: number = 1;
     error: string = '';
     accessDenied: boolean = false;
-
     constructor(private advancedService: AdvancedService) { }
-
     ngOnInit(): void {
         this.loadDashboard();
         this.loadUsers();
     }
-
     loadDashboard(): void {
         this.advancedService.getAdminDashboard().subscribe({
             next: (data) => {
@@ -48,7 +44,6 @@ export class AdminDashboardComponent implements OnInit {
             }
         });
     }
-
     loadUsers(): void {
         this.usersLoading = true;
         this.advancedService.getAllUsers(this.page, 20, this.searchQuery).subscribe({
@@ -63,12 +58,10 @@ export class AdminDashboardComponent implements OnInit {
             }
         });
     }
-
     searchUsers(): void {
         this.page = 1;
         this.loadUsers();
     }
-
     toggleUserStatus(user: AdminUser): void {
         this.advancedService.updateUser(user._id, { isActive: !user.isActive }).subscribe({
             next: () => {
@@ -77,7 +70,6 @@ export class AdminDashboardComponent implements OnInit {
             error: (err) => console.error('Failed to update user:', err)
         });
     }
-
     updateUserRole(user: AdminUser, role: string): void {
         this.advancedService.updateUser(user._id, { role }).subscribe({
             next: () => {
@@ -86,7 +78,6 @@ export class AdminDashboardComponent implements OnInit {
             error: (err) => console.error('Failed to update role:', err)
         });
     }
-
     updateQuota(user: AdminUser, quotaGB: number): void {
         const quotaBytes = quotaGB * 1024 * 1024 * 1024;
         this.advancedService.setUserQuota(user._id, quotaBytes).subscribe({
@@ -96,10 +87,8 @@ export class AdminDashboardComponent implements OnInit {
             error: (err) => console.error('Failed to update quota:', err)
         });
     }
-
     deleteUser(user: AdminUser): void {
         if (!confirm(`Delete user "${user.name}"? This will remove all their documents and folders.`)) return;
-
         this.advancedService.deleteUser(user._id).subscribe({
             next: () => {
                 this.users = this.users.filter(u => u._id !== user._id);
@@ -107,7 +96,6 @@ export class AdminDashboardComponent implements OnInit {
             error: (err) => console.error('Failed to delete user:', err)
         });
     }
-
     formatBytes(bytes: number): string {
         if (bytes === 0) return '0 B';
         const k = 1024;
@@ -115,12 +103,10 @@ export class AdminDashboardComponent implements OnInit {
         const i = Math.floor(Math.log(bytes) / Math.log(k));
         return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
     }
-
     getStoragePercent(user: AdminUser): number {
         if (!user.storageQuota) return 0;
         return (user.storageUsed / user.storageQuota) * 100;
     }
-
     getRelativeTime(dateString: string | undefined): string {
         if (!dateString) return 'Never';
         const date = new Date(dateString);

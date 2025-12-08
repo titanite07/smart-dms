@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AdvancedService, ActivityLog } from '../../services/advanced.service';
-
 @Component({
     selector: 'app-activity-log',
     standalone: true,
@@ -15,14 +14,11 @@ export class ActivityLogComponent implements OnInit {
     page: number = 1;
     totalPages: number = 1;
     stats: any = null;
-
     constructor(private advancedService: AdvancedService) { }
-
     ngOnInit(): void {
         this.loadActivities();
         this.loadStats();
     }
-
     loadActivities(): void {
         this.loading = true;
         this.advancedService.getActivityLog(this.page, 30).subscribe({
@@ -37,7 +33,6 @@ export class ActivityLogComponent implements OnInit {
             }
         });
     }
-
     loadStats(): void {
         this.advancedService.getActivityStats().subscribe({
             next: (data) => {
@@ -46,21 +41,18 @@ export class ActivityLogComponent implements OnInit {
             error: (err) => console.error('Failed to load stats:', err)
         });
     }
-
     nextPage(): void {
         if (this.page < this.totalPages) {
             this.page++;
             this.loadActivities();
         }
     }
-
     prevPage(): void {
         if (this.page > 1) {
             this.page--;
             this.loadActivities();
         }
     }
-
     getActionIcon(action: string): string {
         const icons: { [key: string]: string } = {
             'upload': 'M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-8-8l-4 4m0 0l4 4m-4-4h12',
@@ -76,7 +68,6 @@ export class ActivityLogComponent implements OnInit {
         };
         return icons[action] || 'M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z';
     }
-
     getActionColor(action: string): string {
         const colors: { [key: string]: string } = {
             'upload': 'text-green-500 bg-green-100 dark:bg-green-900/20',
@@ -93,11 +84,9 @@ export class ActivityLogComponent implements OnInit {
         };
         return colors[action] || 'text-zinc-500 bg-zinc-100 dark:bg-zinc-900/20';
     }
-
     formatAction(action: string): string {
         return action.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
     }
-
     getRelativeTime(dateString: string): string {
         const date = new Date(dateString);
         const now = new Date();
@@ -105,7 +94,6 @@ export class ActivityLogComponent implements OnInit {
         const diffMins = Math.floor(diffMs / 60000);
         const diffHours = Math.floor(diffMins / 60);
         const diffDays = Math.floor(diffHours / 24);
-
         if (diffMins < 1) return 'just now';
         if (diffMins < 60) return `${diffMins}m ago`;
         if (diffHours < 24) return `${diffHours}h ago`;

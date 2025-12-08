@@ -1,11 +1,10 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Clerk } from '@clerk/clerk-js';
 import { from, Observable, BehaviorSubject, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { AuthService } from './auth.service';
-
 @Injectable({
     providedIn: 'root'
 })
@@ -13,28 +12,23 @@ export class ClerkService {
     private clerk: Clerk | undefined;
     private clerkLoaded = new BehaviorSubject<boolean>(false);
     public user$ = new BehaviorSubject<any>(null);
-
     constructor(private http: HttpClient, private authService: AuthService) {
         this.initializeClerk();
     }
-
     private async initializeClerk() {
         const publishableKey = environment.clerkPublishableKey;
         if (!publishableKey || publishableKey.includes('REPLACE')) {
             console.error('Clerk Publishable Key is missing or invalid in environment.ts');
             return;
         }
-
         try {
             this.clerk = new Clerk(publishableKey);
             await this.clerk.load();
             this.clerkLoaded.next(true);
-
             if (this.clerk.user) {
                 this.user$.next(this.clerk.user);
                 this.syncUserWithBackend();
             }
-
             this.clerk.addListener((payload: any) => {
                 this.user$.next(payload.user);
                 if (payload.user) {
@@ -45,7 +39,6 @@ export class ClerkService {
             console.error('Failed to load Clerk', err);
         }
     }
-
     mountSignIn(container: HTMLDivElement) {
         this.clerkLoaded.subscribe(loaded => {
             if (loaded && this.clerk) {
@@ -60,7 +53,6 @@ export class ClerkService {
             }
         });
     }
-
     mountSignUp(container: HTMLDivElement) {
         this.clerkLoaded.subscribe(loaded => {
             if (loaded && this.clerk) {
@@ -75,7 +67,6 @@ export class ClerkService {
             }
         });
     }
-
     mountUserButton(container: HTMLDivElement) {
         this.clerkLoaded.subscribe(loaded => {
             if (loaded && this.clerk) {
@@ -83,27 +74,22 @@ export class ClerkService {
             }
         });
     }
-
     async signOut() {
         if (this.clerk) {
             await this.clerk.signOut();
         }
     }
-
     getToken(): Observable<string | null> {
         if (!this.clerk?.session) {
             return from(Promise.resolve(null));
         }
         return from(this.clerk.session.getToken());
     }
-
     private syncUserWithBackend() {
         if (!this.clerk || !this.clerk.user) return;
-
         const user = this.clerk.user;
         const email = user.primaryEmailAddress?.emailAddress;
         const name = user.fullName || user.firstName;
-
         this.getToken().pipe(
             switchMap(token => {
                 if (!token) return from(Promise.resolve(null));

@@ -1,17 +1,11 @@
-<div class="min-h-screen bg-black text-white overflow-x-hidden">
-    <!-- Animated Background -->
+﻿<div class="min-h-screen bg-black text-white overflow-x-hidden">
     <div class="fixed inset-0 z-0">
-        <!-- Gradient Orbs -->
         <div class="orb orb-1"></div>
         <div class="orb orb-2"></div>
         <div class="orb orb-3"></div>
-        <!-- Grid Pattern -->
         <div class="grid-pattern"></div>
-        <!-- Noise Overlay -->
         <div class="noise-overlay"></div>
     </div>
-
-    <!-- Floating 3D Elements -->
     <div class="floating-shapes">
         <div class="shape shape-1">
             <div class="cube">
@@ -38,8 +32,6 @@
             <div class="sphere"></div>
         </div>
     </div>
-
-    <!-- Navbar -->
     <nav class="fixed top-0 left-0 right-0 z-50 nav-glass">
         <div class="max-w-7xl mx-auto px-6 py-4">
             <div class="flex justify-between items-center">
@@ -71,11 +63,8 @@
             </div>
         </div>
     </nav>
-
-    <!-- Hero Section -->
     <section class="relative min-h-screen flex items-center justify-center pt-20 z-10">
         <div class="max-w-7xl mx-auto px-6 text-center">
-            <!-- Animated Badge -->
             <div class="hero-badge" style="animation-delay: 0.2s">
                 <div class="pulse-dot"></div>
                 <span>Introducing SmartDMS v1.0</span>
@@ -83,21 +72,15 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                 </svg>
             </div>
-
-            <!-- Main Headline -->
             <h1 class="hero-title" style="animation-delay: 0.4s">
                 <span class="title-line">Document Management</span>
                 <span class="title-line title-gradient">Reimagined for the Future</span>
             </h1>
-
-            <!-- Subtitle -->
             <p class="hero-subtitle" style="animation-delay: 0.6s">
                 Experience enterprise-grade document management with AI-powered organization,
                 <br class="hidden md:block">
                 real-time collaboration, and military-grade security. Built for teams that move fast.
             </p>
-
-            <!-- CTA Buttons -->
             <div class="hero-cta" style="animation-delay: 0.8s">
                 <a routerLink="/login" class="btn-primary">
                     <span>Start Free Trial</span>
@@ -110,8 +93,6 @@
                     <span>Watch Demo</span>
                 </a>
             </div>
-
-            <!-- Animated Stats -->
             <div class="hero-stats" style="animation-delay: 1s">
                 <div class="stat-item">
                     <span class="stat-number">10K+</span>
@@ -128,8 +109,6 @@
                     <span class="stat-label">Encryption</span>
                 </div>
             </div>
-
-            <!-- 3D Preview Card -->
             <div class="preview-container" style="animation-delay: 1.2s">
                 <div class="preview-card">
                     <div class="preview-glow"></div>
@@ -163,8 +142,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- Scroll Indicator -->
         <div class="scroll-indicator">
             <div class="mouse">
                 <div class="wheel"></div>
@@ -172,8 +149,6 @@
             <span>Scroll to explore</span>
         </div>
     </section>
-
-    <!-- Features Section -->
     <section id="features" class="relative py-32 z-10">
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center mb-20">
@@ -181,9 +156,7 @@
                 <h2 class="section-title">Everything You Need to <span class="text-gradient">Succeed</span></h2>
                 <p class="section-subtitle">Powerful features designed for modern teams and enterprise workflows</p>
             </div>
-
             <div class="features-grid">
-                <!-- Feature Cards -->
                 <div class="feature-card" *ngFor="let feature of features; let i = index"
                     [style.animation-delay]="(i * 0.1) + 's'">
                     <div class="feature-icon" [style.background]="feature.gradient">
@@ -199,8 +172,6 @@
             </div>
         </div>
     </section>
-
-    <!-- How It Works Section -->
     <section id="how-it-works" class="relative py-32 z-10">
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center mb-20">
@@ -208,7 +179,6 @@
                 <h2 class="section-title">Get Started in <span class="text-gradient">3 Simple Steps</span></h2>
                 <p class="section-subtitle">Our intuitive platform gets you up and running in minutes</p>
             </div>
-
             <div class="steps-container">
                 <div class="step-line"></div>
                 <div class="step" *ngFor="let step of steps; let i = index">
@@ -221,8 +191,6 @@
             </div>
         </div>
     </section>
-
-    <!-- CTA Section -->
     <section class="relative py-32 z-10">
         <div class="max-w-4xl mx-auto px-6 text-center">
             <div class="cta-card">
@@ -242,8 +210,6 @@
             </div>
         </div>
     </section>
-
-    <!-- Footer -->
     <footer class="relative py-12 z-10 border-t border-white/10">
         <div class="max-w-7xl mx-auto px-6">
             <div class="flex flex-col md:flex-row justify-between items-center gap-6">

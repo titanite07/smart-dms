@@ -1,4 +1,4 @@
-const express = require('express');
+﻿const express = require('express');
 const {
     uploadDocument,
     uploadVersion,
@@ -21,9 +21,7 @@ const {
 } = require('../controllers/documentController');
 const { protect } = require('../middleware/authMiddleware');
 const upload = require('../middleware/uploadMiddleware');
-
 const router = express.Router();
-
 router.post('/upload', protect, upload.single('file'), uploadDocument);
 router.post('/:id/version', protect, upload.single('file'), uploadVersion);
 router.get('/', protect, getDocuments);
@@ -42,5 +40,4 @@ router.put('/:id/restore', protect, restoreDocument);
 router.delete('/:id', protect, deleteDocument);
 router.delete('/:id/versions/:versionId', protect, deleteVersion);
 router.delete('/:id/permanent', protect, permanentDelete);
-
 module.exports = router;

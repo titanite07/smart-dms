@@ -1,12 +1,10 @@
-const express = require('express');
+﻿const express = require('express');
 const router = express.Router();
 const { protect } = require('../middleware/authMiddleware');
 const { getComments, addComment, updateComment, deleteComment, getCommentCount } = require('../controllers/commentController');
-
 router.get('/:documentId', protect, getComments);
 router.get('/:documentId/count', protect, getCommentCount);
 router.post('/:documentId', protect, addComment);
 router.put('/:commentId', protect, updateComment);
 router.delete('/:commentId', protect, deleteComment);
-
 module.exports = router;

@@ -1,5 +1,4 @@
-<div class="min-h-screen bg-zinc-50 dark:bg-slate-900">
-    <!-- Header -->
+﻿<div class="min-h-screen bg-zinc-50 dark:bg-slate-900">
     <div class="bg-white dark:bg-slate-800 border-b border-gray-200 dark:border-slate-700">
         <div class="max-w-7xl mx-auto px-6 py-4">
             <div class="flex items-center justify-between">
@@ -34,15 +33,11 @@
             </div>
         </div>
     </div>
-
-    <!-- Loading -->
     <div *ngIf="loading" class="flex justify-center py-20">
         <div
             class="w-12 h-12 border-4 border-zinc-200 dark:border-slate-700 border-t-black dark:border-t-white rounded-full animate-spin">
         </div>
     </div>
-
-    <!-- Access Denied -->
     <div *ngIf="!loading && accessDenied" class="max-w-lg mx-auto mt-20">
         <div class="bg-red-50 dark:bg-red-900/20 rounded-2xl p-8 text-center border border-red-200 dark:border-red-800">
             <div
@@ -62,8 +57,6 @@
             </a>
         </div>
     </div>
-
-    <!-- Error State -->
     <div *ngIf="!loading && !accessDenied && error && !dashboard" class="max-w-lg mx-auto mt-20">
         <div
             class="bg-amber-50 dark:bg-amber-900/20 rounded-2xl p-8 text-center border border-amber-200 dark:border-amber-800">
@@ -74,12 +67,8 @@
             </button>
         </div>
     </div>
-
     <div *ngIf="!loading && dashboard && !accessDenied" class="max-w-7xl mx-auto px-6 py-6">
-
-        <!-- Overview Tab -->
         <div *ngIf="activeTab === 'overview'">
-            <!-- Stats Grid -->
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                 <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-gray-200 dark:border-slate-700">
                     <div class="flex items-center gap-3">
@@ -99,7 +88,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-gray-200 dark:border-slate-700">
                     <div class="flex items-center gap-3">
                         <div
@@ -118,7 +106,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-gray-200 dark:border-slate-700">
                     <div class="flex items-center gap-3">
                         <div
@@ -137,7 +124,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-gray-200 dark:border-slate-700">
                     <div class="flex items-center gap-3">
                         <div
@@ -157,8 +143,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Recent Activity -->
             <div class="bg-white dark:bg-slate-800 rounded-2xl border border-gray-200 dark:border-slate-700 p-6">
                 <h2 class="text-lg font-bold text-black dark:text-white mb-4">Recent Activity</h2>
                 <div class="space-y-3">
@@ -187,10 +171,7 @@
                 </div>
             </div>
         </div>
-
-        <!-- Users Tab -->
         <div *ngIf="activeTab === 'users'">
-            <!-- Search -->
             <div class="mb-6">
                 <div class="flex gap-3">
                     <input type="text" [(ngModel)]="searchQuery" (keyup.enter)="searchUsers()"
@@ -202,14 +183,11 @@
                     </button>
                 </div>
             </div>
-
-            <!-- Users Table -->
             <div
                 class="bg-white dark:bg-slate-800 rounded-2xl border border-gray-200 dark:border-slate-700 overflow-hidden">
                 <div *ngIf="usersLoading" class="p-12 flex justify-center">
                     <div class="w-10 h-10 border-3 border-zinc-200 border-t-black rounded-full animate-spin"></div>
                 </div>
-
                 <table *ngIf="!usersLoading" class="w-full">
                     <thead class="bg-zinc-50 dark:bg-slate-700/50 border-b border-gray-200 dark:border-slate-700">
                         <tr>

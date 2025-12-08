@@ -1,15 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap');
-
+﻿@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
-
 body {
   font-family: 'Inter', sans-serif;
   @apply bg-slate-50 text-slate-900;
@@ -17,11 +14,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
   height: 100%;
 }
-
 html {
   height: 100%;
 }
-
 h1,
 h2,
 h3,
@@ -30,17 +25,14 @@ h5,
 h6 {
   font-family: 'Outfit', sans-serif;
 }
-
 @layer utilities {
   .animate-spin {
     animation: spin 1s linear infinite;
   }
-
   @keyframes spin {
     from {
       transform: rotate(0deg);
     }
-
     to {
       transform: rotate(360deg);
     }

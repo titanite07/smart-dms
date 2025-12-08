@@ -1,8 +1,7 @@
-import { Component, EventEmitter, Output, Input, OnInit } from '@angular/core';
+﻿import { Component, EventEmitter, Output, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DocumentService } from '../../services/document.service';
-
 @Component({
     selector: 'app-upload-modal',
     standalone: true,
@@ -15,14 +14,12 @@ export class UploadModalComponent implements OnInit {
     @Input() currentFolderId: string | null = null;
     @Input() currentFolderName: string = 'Home';
     @Input() files: File[] = [];
-
     title = '';
     tags = '';
     selectedFiles: File[] = [];
     uploading = false;
     error = '';
     isDragDrop = false;
-
     private stopWords = new Set([
         'the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for',
         'of', 'with', 'by', 'from', 'as', 'is', 'was', 'are', 'were', 'been',
@@ -30,14 +27,11 @@ export class UploadModalComponent implements OnInit {
         'could', 'should', 'may', 'might', 'can', 'this', 'that', 'these',
         'those', 'it', 'its', 'file', 'document', 'copy', 'new', 'final', 'v1', 'v2'
     ]);
-
     constructor(private documentService: DocumentService) { }
-
     ngOnInit(): void {
         if (this.files && this.files.length > 0) {
             this.selectedFiles = this.files;
             this.isDragDrop = true;
-
             if (this.selectedFiles.length === 1) {
                 this.title = this.selectedFiles[0].name;
                 this.tags = this.documentService.generateTags(this.selectedFiles[0]);
@@ -47,7 +41,6 @@ export class UploadModalComponent implements OnInit {
             }
         }
     }
-
     generateTagsFromMultipleFiles(files: File[]): string {
         const allTags: Set<string> = new Set();
         files.forEach(file => {
@@ -56,7 +49,6 @@ export class UploadModalComponent implements OnInit {
         });
         return Array.from(allTags).slice(0, 6).join(', ');
     }
-
     onFileSelected(event: any): void {
         const files: FileList = event.target.files;
         if (files && files.length > 0) {
@@ -71,25 +63,20 @@ export class UploadModalComponent implements OnInit {
             this.error = '';
         }
     }
-
     onTitleChange(): void {
         if (this.selectedFiles.length === 1) {
             this.tags = this.documentService.generateTags(this.selectedFiles[0], this.title);
         }
     }
-
     onSubmit(): void {
         if (this.selectedFiles.length === 0) {
             this.error = 'Please select at least one file';
             return;
         }
-
         this.uploading = true;
         this.error = '';
-
         let completed = 0;
         let errors = 0;
-
         const uploadNext = (index: number) => {
             if (index >= this.selectedFiles.length) {
                 this.uploading = false;
@@ -101,12 +88,10 @@ export class UploadModalComponent implements OnInit {
                 }
                 return;
             }
-
             const file = this.selectedFiles[index];
             const docTitle = this.selectedFiles.length > 1 ? file.name : this.title;
             const docTags = this.selectedFiles.length > 1 ? this.documentService.generateTags(file) : this.tags;
             const folderId = (this.currentFolderId === 'null' || this.currentFolderId === 'root') ? null : this.currentFolderId;
-
             this.documentService.uploadDocument(file, docTitle, docTags, folderId).subscribe({
                 next: () => {
                     completed++;
@@ -119,12 +104,9 @@ export class UploadModalComponent implements OnInit {
                 }
             });
         };
-
         uploadNext(0);
     }
-
     closeModal(): void {
         this.close.emit();
     }
 }
-

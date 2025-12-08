@@ -1,7 +1,6 @@
-import { Component } from '@angular/core';
+﻿import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-
 @Component({
   selector: 'app-landing',
   standalone: true,
@@ -48,7 +47,6 @@ export class LandingComponent {
       gradient: 'linear-gradient(135deg, #6366F1, #4338CA)'
     }
   ];
-
   steps = [
     {
       title: 'Create Your Account',

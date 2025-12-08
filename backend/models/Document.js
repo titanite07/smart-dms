@@ -1,6 +1,5 @@
-const mongoose = require('mongoose');
+﻿const mongoose = require('mongoose');
 const crypto = require('crypto');
-
 const documentSchema = new mongoose.Schema({
     title: {
         type: String,
@@ -112,16 +111,12 @@ const documentSchema = new mongoose.Schema({
 }, {
     timestamps: true
 });
-
 documentSchema.index({ title: 'text', tags: 'text' });
 documentSchema.index({ owner: 1 });
 documentSchema.index({ parentFolder: 1 });
-
-
 documentSchema.methods.generatePublicLink = function () {
     this.publicLink.token = crypto.randomBytes(32).toString('hex');
     this.publicLink.isActive = true;
     return this.publicLink.token;
 };
-
 module.exports = mongoose.model('Document', documentSchema);

@@ -1,4 +1,4 @@
-import {
+﻿import {
     trigger,
     transition,
     style,
@@ -6,7 +6,6 @@ import {
     group,
     animate,
 } from '@angular/animations';
-
 export const fadeAnimation = trigger('routeAnimations', [
     transition('* <=> *', [
         style({ position: 'relative' }),

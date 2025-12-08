@@ -1,5 +1,4 @@
-<div class="flex h-screen bg-white dark:bg-slate-900 font-sans overflow-hidden w-full transition-colors duration-300">
-    <!-- Debug Element to prove component loaded -->
+﻿<div class="flex h-screen bg-white dark:bg-slate-900 font-sans overflow-hidden w-full transition-colors duration-300">
     <div style="display: none;" id="dashboard-loaded-marker"></div>
     <aside
         class="w-72 bg-white dark:bg-slate-900 border-r border-gray-200 dark:border-slate-800 hidden md:flex flex-col z-20 transition-all duration-300">
@@ -21,11 +20,9 @@
                 </div>
             </div>
         </div>
-
         <nav class="flex-1 p-4 space-y-2 overflow-y-auto custom-scrollbar">
             <div class="text-xs font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider mb-2 px-4 mt-2">
                 Main</div>
-
             <button (click)="setView('all')"
                 [class]="currentView === 'all' ? 'bg-zinc-100 dark:bg-slate-800 text-black dark:text-white font-semibold' : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-slate-800 hover:text-black dark:hover:text-white'"
                 class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group">
@@ -37,8 +34,6 @@
                 </svg>
                 All Files
             </button>
-
-            <!-- ... Similar updates for other buttons ... -->
             <button (click)="setView('recent')"
                 [class]="currentView === 'recent' ? 'bg-zinc-100 dark:bg-slate-800 text-black dark:text-white font-semibold' : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-slate-800 hover:text-black dark:hover:text-white'"
                 class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group">
@@ -49,7 +44,6 @@
                 </svg>
                 Recent
             </button>
-
             <button (click)="setView('starred')"
                 [class]="currentView === 'starred' ? 'bg-zinc-100 dark:bg-slate-800 text-black dark:text-white font-semibold' : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-slate-800 hover:text-black dark:hover:text-white'"
                 class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group">
@@ -61,7 +55,6 @@
                 </svg>
                 Starred
             </button>
-
             <button (click)="setView('shared')"
                 [class]="currentView === 'shared' ? 'bg-zinc-100 dark:bg-slate-800 text-black dark:text-white font-semibold' : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-slate-800 hover:text-black dark:hover:text-white'"
                 class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group">
@@ -73,10 +66,8 @@
                 </svg>
                 Shared with me
             </button>
-
             <div class="text-xs font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider mb-2 px-4 mt-4">
                 System</div>
-
             <button (click)="setView('trash')"
                 [class]="currentView === 'trash' ? 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 font-semibold' : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-slate-800 hover:text-black dark:hover:text-white'"
                 class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group">
@@ -88,7 +79,6 @@
                 </svg>
                 Trash
             </button>
-
             <a routerLink="/activity"
                 class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-slate-800 hover:text-black dark:hover:text-white">
                 <svg class="w-5 h-5 text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-300 transition-colors"
@@ -98,7 +88,6 @@
                 </svg>
                 Activity Log
             </a>
-
             <a routerLink="/admin"
                 class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-slate-800 hover:text-black dark:hover:text-white">
                 <svg class="w-5 h-5 text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-300 transition-colors"
@@ -111,11 +100,8 @@
                 </svg>
                 Admin Panel
             </a>
-
-            <!-- Storage Bar -->
             <app-storage-bar class="mt-4"></app-storage-bar>
         </nav>
-
         <div class="p-4 border-t border-gray-100 dark:border-slate-800 bg-white dark:bg-slate-900">
             <a routerLink="/profile"
                 class="flex items-center gap-3 px-3 py-2 mb-2 bg-zinc-50 dark:bg-slate-800 rounded-xl border border-zinc-100 dark:border-slate-700 hover:bg-zinc-100 dark:hover:bg-slate-700 hover:border-zinc-200 dark:hover:border-slate-600 transition-all duration-200 cursor-pointer group">
@@ -147,19 +133,14 @@
             </button>
         </div>
     </aside>
-
-    <!-- Main Content Area -->
     <main class="flex-1 flex flex-col h-full relative overflow-hidden bg-zinc-50/30 dark:bg-slate-900/50">
-        <!-- Glass Header Overlay -->
         <div
             class="absolute inset-x-0 top-0 h-2 bg-gradient-to-b from-white/10 dark:from-slate-900/10 to-transparent pointer-events-none z-10">
         </div>
-
         <div class="flex-1 overflow-y-auto custom-scrollbar p-6 md:p-8" (dragover)="onDragOver($event)"
             (dragleave)="onDragLeave($event)" (drop)="onDrop($event)" [ngClass]="{
                 'bg-blue-50/50 dark:bg-blue-900/10': isDragging
             }">
-            <!-- Mobile Header (hidden md) -->
             <div
                 class="md:hidden flex items-center justify-between mb-8 pb-4 border-b border-gray-200 dark:border-slate-800">
                 <div class="flex items-center gap-2">
@@ -183,8 +164,6 @@
                     </svg>
                 </button>
             </div>
-
-            <!-- Top Bar -->
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
                 <div class="animate-fade-in-up">
                     <h1 class="text-3xl font-display font-bold text-black dark:text-white capitalize tracking-tight">
@@ -202,7 +181,6 @@
                         <span *ngIf="folders.length === 0 && filteredDocuments.length === 0">Empty</span>
                     </p>
                 </div>
-
                 <div class="flex flex-col md:flex-row gap-4 items-stretch md:items-center animate-fade-in-up delay-100">
                     <div class="relative w-full md:w-80 group">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -217,7 +195,6 @@
                             class="w-full pl-10 pr-4 py-2.5 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-black dark:focus:ring-white focus:border-black dark:focus:border-white text-sm text-black dark:text-white shadow-sm transition-all placeholder:text-zinc-400 outline-none" />
                     </div>
                     <div class="flex gap-3">
-                        <!-- Theme Toggle -->
                         <button (click)="toggleTheme()"
                             class="p-2.5 rounded-xl border border-gray-200 dark:border-slate-700 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-slate-800 hover:text-black dark:hover:text-white transition-all">
                             <svg *ngIf="isDarkMode" class="w-5 h-5" fill="none" stroke="currentColor"
@@ -233,7 +210,6 @@
                                 </path>
                             </svg>
                         </button>
-
                         <button (click)="createFolder()"
                             class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-white dark:bg-slate-800 text-zinc-700 dark:text-white border border-gray-200 dark:border-slate-700 rounded-xl font-semibold text-sm hover:bg-zinc-50 dark:hover:bg-slate-700 hover:text-black dark:hover:text-white transition-all duration-200">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -255,8 +231,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Content Area -->
             <div *ngIf="loading" class="flex justify-center py-24">
                 <div class="flex flex-col items-center gap-4">
                     <div
@@ -265,12 +239,9 @@
                     <p class="text-zinc-500 dark:text-zinc-400 font-medium animate-pulse">Loading workspace...</p>
                 </div>
             </div>
-
             <div *ngIf="!loading" class="animate-fade-in-up delay-200">
-                <!-- We are wrapping the list in a modern card container -->
                 <div
                     class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-800 p-1">
-                    <!-- Breadcrumbs -->
                     <div *ngIf="currentView === 'all'"
                         class="px-6 py-3 border-b border-gray-100 dark:border-slate-800 flex items-center gap-2 text-sm">
                         <span (click)="onNavigateUp(null)"
@@ -289,13 +260,11 @@
                             </span>
                         </ng-container>
                     </div>
-
                     <app-document-list [documents]="filteredDocuments" [folders]="folders"
                         [currentUserId]="currentUser?._id" [isTrashView]="currentView === 'trash'"
                         (refresh)="loadContent()" (navigateToFolder)="onNavigateToFolder($event)">
                     </app-document-list>
                 </div>
-
                 <div *ngIf="filteredDocuments.length === 0 && folders.length === 0"
                     class="text-center py-20 bg-white dark:bg-slate-900 rounded-3xl border-2 border-dashed border-zinc-200 dark:border-slate-700 mt-4 transition-colors duration-200">
                     <div
@@ -318,14 +287,9 @@
         </div>
     </main>
 </div>
-
-
-
 <app-upload-modal *ngIf="showUploadModal" [currentFolderId]="currentFolderId"
     [currentFolderName]="getCurrentFolderName()" [files]="draggedFiles" (close)="closeUploadModal()"
     (uploadSuccess)="onUploadSuccess()"></app-upload-modal>
-
-<!-- Upload Progress Indicator -->
 <div *ngIf="isUploading"
     class="fixed bottom-6 right-6 bg-white dark:bg-slate-800 rounded-2xl shadow-2xl border border-gray-200 dark:border-slate-700 p-4 min-w-[280px] z-50 animate-slide-up">
     <div class="flex items-center gap-3">

@@ -1,4 +1,4 @@
-<div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4" (click)="closeModal()">
+﻿<div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4" (click)="closeModal()">
     <div class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md" (click)="$event.stopPropagation()">
         <div class="flex justify-between items-center mb-6">
             <h2 class="text-2xl font-bold text-gray-800">Upload Document</h2>
@@ -9,9 +9,7 @@
                 </svg>
             </button>
         </div>
-
         <form (ngSubmit)="onSubmit()" class="space-y-5">
-            <!-- Destination Context -->
             <div class="bg-gray-50 p-3 rounded-lg border border-gray-100 flex items-center justify-between">
                 <span class="text-sm text-gray-500">Uploading to:</span>
                 <span class="text-sm font-semibold text-gray-800 flex items-center gap-1">
@@ -23,16 +21,12 @@
                     {{ currentFolderName }}
                 </span>
             </div>
-
-            <!-- Title Input (Hidden for multi-file drag drop) -->
             <div *ngIf="!isDragDrop || selectedFiles.length === 1">
                 <label class="block text-sm font-medium text-gray-700 mb-2">Document Title</label>
                 <input type="text" [(ngModel)]="title" (ngModelChange)="onTitleChange()" name="title" required
                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
                     placeholder="Enter document title" />
             </div>
-
-            <!-- Simplified File Display for Drag Drop -->
             <div *ngIf="isDragDrop">
                 <div class="block text-sm font-medium text-gray-700 mb-2">Selected Files</div>
                 <div
@@ -48,14 +42,12 @@
                     </div>
                 </div>
             </div>
-
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">Tags (comma-separated)</label>
                 <input type="text" [(ngModel)]="tags" name="tags"
                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
                     placeholder="e.g., Invoice, HR, Important" />
             </div>
-
             <div *ngIf="!isDragDrop" class="space-y-3">
                 <label class="block text-sm font-medium text-gray-700 mb-2">Select Files or Folder</label>
                 <div class="flex gap-2">
@@ -73,7 +65,6 @@
                 </div>
                 <p class="text-sm text-gray-500">Accepted: All file types (Max 50MB per file)</p>
             </div>
-
             <button type="submit" [disabled]="uploading || selectedFiles.length === 0 || !title"
                 class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white py-3 rounded-lg font-semibold hover:from-purple-700 hover:to-indigo-700 transition transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50">
                 {{ uploading ? 'Uploading...' : (selectedFiles.length > 1 ? 'Upload Files' : 'Upload Document') }}

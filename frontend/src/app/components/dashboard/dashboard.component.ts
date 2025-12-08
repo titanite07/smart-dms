@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
+﻿import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
@@ -8,7 +8,6 @@ import { AuthService } from '../../services/auth.service';
 import { UploadModalComponent } from '../upload-modal/upload-modal.component';
 import { DocumentListComponent } from '../document-list/document-list.component';
 import { StorageBarComponent } from '../storage-bar/storage-bar.component';
-
 @Component({
     selector: 'app-dashboard',
     standalone: true,
@@ -17,7 +16,6 @@ import { StorageBarComponent } from '../storage-bar/storage-bar.component';
 })
 export class DashboardComponent implements OnInit {
     @ViewChild(DocumentListComponent) documentList!: DocumentListComponent;
-
     documents: Document[] = [];
     folders: Folder[] = [];
     filteredDocuments: Document[] = [];
@@ -28,25 +26,19 @@ export class DashboardComponent implements OnInit {
     showUploadModal = false;
     currentUser: any;
     loading = false;
-
-    // Upload progress tracking
     isUploading = false;
     currentUploadingFile = '';
     uploadedCount = 0;
     totalUploadCount = 0;
-
     @HostListener('document:keydown', ['$event'])
     handleKeyboardEvent(event: KeyboardEvent) {
         const target = event.target as HTMLElement;
         if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
             return;
         }
-
         if (!this.documentList) return;
-
         if (event.ctrlKey || event.metaKey) {
             const selectedItem = this.documentList.selectedItem;
-
             if (event.key === 'c' && selectedItem) {
                 event.preventDefault();
                 this.documentList.copyItem(selectedItem.type, selectedItem.id);
@@ -59,14 +51,12 @@ export class DashboardComponent implements OnInit {
             }
         }
     }
-
     constructor(
         private documentService: DocumentService,
         private folderService: FolderService,
         private authService: AuthService,
         private router: Router
     ) { }
-
     ngOnInit(): void {
         this.authService.currentUser$.subscribe(user => {
             this.currentUser = user;
@@ -74,10 +64,8 @@ export class DashboardComponent implements OnInit {
         this.initializeTheme();
         this.loadContent();
     }
-
     loadContent(): void {
         this.loading = true;
-
         if (this.currentView === 'all') {
             this.folderService.getFolderContents(this.currentFolderId || 'root').subscribe({
                 next: (data) => {
@@ -128,26 +116,21 @@ export class DashboardComponent implements OnInit {
             });
         }
     }
-
     setView(view: 'all' | 'starred' | 'shared' | 'recent' | 'trash'): void {
         this.currentView = view;
         this.currentFolderId = null;
         this.loadContent();
     }
-
     onNavigateToFolder(folderId: string): void {
         this.currentFolderId = folderId;
         this.loadContent();
     }
-
     onNavigateUp(folderId: string | null): void {
         this.currentFolderId = folderId;
         this.loadContent();
     }
-
     filterDocuments(): void {
         let filtered = this.documents;
-
         if (this.currentView === 'shared') {
             filtered = filtered.filter(doc => doc.owner._id !== this.currentUser._id);
         } else if (this.currentView === 'starred') {
@@ -164,7 +147,6 @@ export class DashboardComponent implements OnInit {
                 return getLastView(b) - getLastView(a);
             });
         }
-
         if (this.searchQuery.trim()) {
             const query = this.searchQuery.toLowerCase();
             filtered = filtered.filter(doc =>
@@ -172,27 +154,21 @@ export class DashboardComponent implements OnInit {
                 doc.tags.some(tag => tag.toLowerCase().includes(query))
             );
         }
-
         this.filteredDocuments = filtered;
     }
-
     onSearch(): void {
         this.filterDocuments();
     }
-
     openUploadModal(): void {
         this.showUploadModal = true;
     }
-
     closeUploadModal(): void {
         this.showUploadModal = false;
     }
-
     onUploadSuccess(): void {
         this.closeUploadModal();
         this.loadContent();
     }
-
     createFolder(): void {
         const name = prompt('Enter folder name:');
         if (name && name.trim()) {
@@ -207,19 +183,15 @@ export class DashboardComponent implements OnInit {
             });
         }
     }
-
     getCurrentFolderName(): string {
         if (!this.breadcrumbs || this.breadcrumbs.length === 0) return 'Home';
         return this.breadcrumbs[this.breadcrumbs.length - 1].name;
     }
-
     logout(): void {
         this.authService.logout();
         this.router.navigate(['/login']);
     }
-
     isDarkMode = false;
-
     initializeTheme(): void {
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -230,7 +202,6 @@ export class DashboardComponent implements OnInit {
             document.documentElement.classList.remove('dark');
         }
     }
-
     toggleTheme(): void {
         this.isDarkMode = !this.isDarkMode;
         if (this.isDarkMode) {
@@ -241,27 +212,22 @@ export class DashboardComponent implements OnInit {
             localStorage.setItem('theme', 'light');
         }
     }
-
     isDragging = false;
     draggedFiles: File[] = [];
-
     onDragOver(event: DragEvent): void {
         event.preventDefault();
         event.stopPropagation();
         this.isDragging = true;
     }
-
     onDragLeave(event: DragEvent): void {
         event.preventDefault();
         event.stopPropagation();
         this.isDragging = false;
     }
-
     onDrop(event: DragEvent): void {
         event.preventDefault();
         event.stopPropagation();
         this.isDragging = false;
-
         const items = event.dataTransfer?.items;
         if (items && items.length > 0) {
             this.processDroppedItems(items);
@@ -273,27 +239,20 @@ export class DashboardComponent implements OnInit {
             }
         }
     }
-
     async processDroppedItems(items: DataTransferItemList): Promise<void> {
         const entries: FileSystemEntry[] = [];
-
         for (let i = 0; i < items.length; i++) {
             const entry = items[i].webkitGetAsEntry();
             if (entry) {
                 entries.push(entry);
             }
         }
-
         const hasFolder = entries.some(e => e.isDirectory);
-
         if (hasFolder) {
-            // Count total files first
             this.totalUploadCount = await this.countFilesInEntries(entries);
             this.uploadedCount = 0;
             this.isUploading = true;
-
             await this.processEntriesWithFolders(entries, this.currentFolderId);
-
             this.isUploading = false;
             this.loadContent();
         } else {
@@ -304,14 +263,12 @@ export class DashboardComponent implements OnInit {
             }
         }
     }
-
     async processEntriesWithFolders(entries: FileSystemEntry[], parentFolderId: string | null): Promise<void> {
         for (const entry of entries) {
             try {
                 if (entry.isDirectory) {
                     const dirEntry = entry as FileSystemDirectoryEntry;
                     const newFolder = await this.folderService.createFolder(entry.name, parentFolderId).toPromise();
-
                     if (newFolder) {
                         const subEntries = await this.readDirectory(dirEntry);
                         await this.processEntriesWithFolders(subEntries, newFolder._id);
@@ -322,19 +279,17 @@ export class DashboardComponent implements OnInit {
                     if (file) {
                         this.currentUploadingFile = file.name;
                         const tags = this.documentService.generateTags(file);
-                        // Retry up to 3 times on failure
                         let retries = 3;
                         while (retries > 0) {
                             try {
                                 await this.documentService.uploadDocument(file, file.name, tags, parentFolderId).toPromise();
                                 this.uploadedCount++;
-                                break; // Success, exit retry loop
+                                break;
                             } catch (uploadError) {
                                 retries--;
                                 if (retries === 0) {
                                     console.error(`Failed to upload ${file.name} after 3 attempts:`, uploadError);
                                 } else {
-                                    // Wait 500ms before retry
                                     await new Promise(resolve => setTimeout(resolve, 500));
                                 }
                             }
@@ -343,16 +298,13 @@ export class DashboardComponent implements OnInit {
                 }
             } catch (error) {
                 console.error(`Error processing entry ${entry.name}:`, error);
-                // Continue with next entry instead of stopping
             }
         }
     }
-
     readDirectory(dirEntry: FileSystemDirectoryEntry): Promise<FileSystemEntry[]> {
         return new Promise((resolve) => {
             const reader = dirEntry.createReader();
             const entries: FileSystemEntry[] = [];
-
             const readEntries = () => {
                 reader.readEntries((results) => {
                     if (results.length === 0) {
@@ -366,7 +318,6 @@ export class DashboardComponent implements OnInit {
             readEntries();
         });
     }
-
     getFileFromEntry(fileEntry: FileSystemFileEntry): Promise<File | null> {
         return new Promise((resolve) => {
             fileEntry.file(
@@ -375,7 +326,6 @@ export class DashboardComponent implements OnInit {
             );
         });
     }
-
     async getFilesFromEntries(entries: FileSystemEntry[]): Promise<File[]> {
         const files: File[] = [];
         for (const entry of entries) {
@@ -386,7 +336,6 @@ export class DashboardComponent implements OnInit {
         }
         return files;
     }
-
     async countFilesInEntries(entries: FileSystemEntry[]): Promise<number> {
         let count = 0;
         for (const entry of entries) {

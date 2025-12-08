@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+﻿import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Document, DocumentService } from '../../services/document.service';
@@ -7,7 +7,6 @@ import { PreviewModalComponent } from '../preview-modal/preview-modal.component'
 import { VersionHistoryComponent } from '../version-history/version-history.component';
 import { CommentsComponent } from '../comments/comments.component';
 import { PublicLinkModalComponent } from '../public-link-modal/public-link-modal.component';
-
 @Component({
     selector: 'app-document-list',
     standalone: true,
@@ -21,7 +20,6 @@ export class DocumentListComponent {
     @Input() isTrashView: boolean = false;
     @Output() refresh = new EventEmitter<void>();
     @Output() navigateToFolder = new EventEmitter<string>();
-
     showVersionModal = false;
     showShareModal = false;
     showPreviewModal = false;
@@ -34,31 +32,25 @@ export class DocumentListComponent {
     uploadingVersion = false;
     sharing = false;
     error = '';
-
     constructor(
         private documentService: DocumentService,
         private folderService: FolderService
     ) { }
-
     isOwner(doc: Document | Folder): boolean {
         const ownerId = (doc as any).owner?._id || (doc as any).owner;
         return ownerId === this.currentUserId;
     }
-
     canEdit(doc: Document): boolean {
         if (this.isOwner(doc)) return true;
         return doc.sharedWith?.some(share =>
             share.user._id === this.currentUserId && share.permission === 'edit'
         ) || false;
     }
-
     onFolderClick(folderId: string): void {
         this.navigateToFolder.emit(folderId);
     }
-
     deleteItem(item: Document | Folder, type: 'document' | 'folder'): void {
         if (!confirm(`Are you sure you want to delete this ${type}?`)) return;
-
         if (type === 'document') {
             this.documentService.deleteDocument(item._id).subscribe({
                 next: () => this.refresh.emit(),
@@ -71,7 +63,6 @@ export class DocumentListComponent {
             });
         }
     }
-
     restoreDocument(doc: Document): void {
         this.documentService.restoreDocument(doc._id).subscribe({
             next: () => {
@@ -83,10 +74,8 @@ export class DocumentListComponent {
             }
         });
     }
-
     permanentDeleteDocument(doc: Document): void {
         if (!confirm('This will PERMANENTLY delete the document. This action cannot be undone. Continue?')) return;
-
         this.documentService.permanentDelete(doc._id).subscribe({
             next: () => {
                 this.refresh.emit();
@@ -97,25 +86,20 @@ export class DocumentListComponent {
             }
         });
     }
-
     openCommentsPanel(doc: Document): void {
         this.selectedDocument = doc;
         this.showCommentsPanel = true;
     }
-
     closeCommentsPanel(): void {
         this.showCommentsPanel = false;
     }
-
     openPublicLinkModal(doc: Document): void {
         this.selectedDocument = doc;
         this.showPublicLinkModal = true;
     }
-
     closePublicLinkModal(): void {
         this.showPublicLinkModal = false;
     }
-
     restoreFolder(folder: Folder): void {
         this.folderService.restoreFolder(folder._id).subscribe({
             next: () => {
@@ -127,10 +111,8 @@ export class DocumentListComponent {
             }
         });
     }
-
     permanentDeleteFolder(folder: Folder): void {
         if (!confirm('This will PERMANENTLY delete the folder and all its contents. This action cannot be undone. Continue?')) return;
-
         this.folderService.permanentDeleteFolder(folder._id).subscribe({
             next: () => {
                 this.refresh.emit();
@@ -141,14 +123,11 @@ export class DocumentListComponent {
             }
         });
     }
-
     draggedDocId: string | null = null;
     draggedFolderId: string | null = null;
     draggedType: 'document' | 'folder' | null = null;
-
     clipboard: { type: 'document' | 'folder', id: string, action: 'copy' | 'cut' } | null = null;
     selectedItem: { type: 'document' | 'folder', id: string } | null = null;
-
     onDocDragStart(event: DragEvent, doc: Document): void {
         this.draggedDocId = doc._id;
         this.draggedFolderId = null;
@@ -159,7 +138,6 @@ export class DocumentListComponent {
             event.dataTransfer.setData('application/x-dms-type', 'document');
         }
     }
-
     onFolderDragStart(event: DragEvent, folder: Folder): void {
         this.draggedFolderId = folder._id;
         this.draggedDocId = null;
@@ -170,17 +148,14 @@ export class DocumentListComponent {
             event.dataTransfer.setData('application/x-dms-type', 'folder');
         }
     }
-
     onFolderDragOver(event: DragEvent): void {
         event.preventDefault();
         if (event.dataTransfer) {
             event.dataTransfer.dropEffect = 'move';
         }
     }
-
     onFolderDrop(event: DragEvent, targetFolder: Folder): void {
         event.preventDefault();
-
         if (this.draggedDocId && this.draggedType === 'document') {
             this.documentService.moveDocument(this.draggedDocId, targetFolder._id).subscribe({
                 next: () => {
@@ -194,14 +169,12 @@ export class DocumentListComponent {
                 }
             });
         }
-
         if (this.draggedFolderId && this.draggedType === 'folder') {
             if (this.draggedFolderId === targetFolder._id) {
                 alert('Cannot move folder into itself');
                 this.clearDragState();
                 return;
             }
-
             this.folderService.moveFolder(this.draggedFolderId, targetFolder._id).subscribe({
                 next: () => {
                     this.refresh.emit();
@@ -215,33 +188,26 @@ export class DocumentListComponent {
             });
         }
     }
-
     clearDragState(): void {
         this.draggedDocId = null;
         this.draggedFolderId = null;
         this.draggedType = null;
     }
-
     selectItem(type: 'document' | 'folder', id: string): void {
         this.selectedItem = { type, id };
     }
-
     copyItem(type: 'document' | 'folder', id: string): void {
         this.clipboard = { type, id, action: 'copy' };
     }
-
     cutItem(type: 'document' | 'folder', id: string): void {
         this.clipboard = { type, id, action: 'cut' };
     }
-
     pasteItem(targetFolderId: string | null): void {
         if (!this.clipboard) {
             alert('Nothing in clipboard to paste');
             return;
         }
-
         const { type, id, action } = this.clipboard;
-
         if (type === 'document') {
             if (action === 'cut') {
                 this.documentService.moveDocument(id, targetFolderId).subscribe({
@@ -274,12 +240,10 @@ export class DocumentListComponent {
             }
         }
     }
-
     downloadDocument(doc: Document): void {
         const url = this.documentService.downloadFile(doc._id);
         window.open(url, '_blank');
     }
-
     onToggleStar(doc: Document): void {
         this.documentService.toggleStar(doc._id).subscribe({
             next: (response) => {
@@ -291,13 +255,11 @@ export class DocumentListComponent {
             }
         });
     }
-
     openVersionModal(doc: Document): void {
         this.selectedDocument = doc;
         this.showVersionModal = true;
         this.loadVersions(doc._id);
     }
-
     loadVersions(docId: string): void {
         this.documentService.getVersions(docId).subscribe({
             next: (data) => {
@@ -308,17 +270,14 @@ export class DocumentListComponent {
             }
         });
     }
-
     downloadVersion(versionNumber: number): void {
         if (this.selectedDocument) {
             const url = this.documentService.downloadFile(this.selectedDocument._id, versionNumber);
             window.open(url, '_blank');
         }
     }
-
     deleteVersion(versionId: string): void {
         if (!confirm('Are you sure you want to delete this version?') || !this.selectedDocument) return;
-
         this.documentService.deleteVersion(this.selectedDocument._id, versionId).subscribe({
             next: (data) => {
                 if (this.versions) {
@@ -331,7 +290,6 @@ export class DocumentListComponent {
             }
         });
     }
-
     onVersionFileSelected(event: any): void {
         const file = event.target.files[0];
         if (file && this.selectedDocument) {
@@ -349,21 +307,18 @@ export class DocumentListComponent {
             });
         }
     }
-
     closeVersionModal(): void {
         this.showVersionModal = false;
         this.selectedDocument = null;
         this.versions = null;
         this.error = '';
     }
-
     openShareModal(doc: Document): void {
         this.selectedDocument = doc;
         this.showShareModal = true;
         this.shareEmail = '';
         this.sharePermission = 'view';
     }
-
     shareDocument(): void {
         if (this.selectedDocument && this.shareEmail) {
             this.sharing = true;
@@ -381,19 +336,16 @@ export class DocumentListComponent {
             });
         }
     }
-
     closeShareModal(): void {
         this.showShareModal = false;
         this.selectedDocument = null;
         this.shareEmail = '';
         this.error = '';
     }
-
     openPreviewModal(doc: Document): void {
         this.selectedDocument = doc;
         this.showPreviewModal = true;
     }
-
     closePreviewModal(): void {
         this.showPreviewModal = false;
         this.selectedDocument = null;

@@ -1,4 +1,4 @@
-<div
+﻿<div
   class="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-gray-900 via-black to-gray-800">
   <div class="w-full max-w-md">
     <div class="bg-gray-900 rounded-xl shadow-lg border border-red-600 overflow-hidden">
@@ -19,7 +19,6 @@
             {{ isLogin ? 'Sign in to access your documents' : 'Get started with document management' }}
           </p>
         </div>
-
         <form (ngSubmit)="onSubmit()" class="space-y-5">
           <div *ngIf="!isLogin" class="space-y-2">
             <label class="text-sm font-medium text-gray-300">Full Name</label>
@@ -27,7 +26,6 @@
               class="w-full px-3 py-2.5 bg-gray-800 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition duration-200 outline-none text-sm"
               placeholder="John Doe" />
           </div>
-
           <div class="space-y-2">
             <label class="text-sm font-medium text-gray-300">Email Address</label>
             <div class="flex gap-2 items-start">
@@ -39,14 +37,10 @@
                   [class.focus:ring-green-500]="!isLogin && emailStatus === 'available'"
                   [class.focus:ring-red-500]="!isLogin && emailStatus === 'taken'" placeholder="you@example.com" />
               </div>
-
-              <!-- Rotating Status Button (Aside) -->
               <div *ngIf="!isLogin && emailStatus !== 'idle'" class="relative group">
                 <div class="w-10 h-10 rounded-lg flex items-center justify-center transition-all duration-300"
                   [class.bg-gray-100]="emailStatus === 'checking'" [class.bg-green-100]="emailStatus === 'available'"
                   [class.bg-red-100]="emailStatus === 'taken'">
-
-                  <!-- Checking Spinner -->
                   <svg *ngIf="emailStatus === 'checking'" class="animate-spin h-5 w-5 text-gray-400"
                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -54,23 +48,17 @@
                       d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
                     </path>
                   </svg>
-
-                  <!-- Success Icon -->
                   <svg *ngIf="emailStatus === 'available'"
                     class="h-5 w-5 text-green-600 transition-transform duration-500" fill="none" stroke="currentColor"
                     viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                   </svg>
-
-                  <!-- Error Icon -->
                   <svg *ngIf="emailStatus === 'taken'" class="h-5 w-5 text-red-600" fill="none" stroke="currentColor"
                     viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
                     </path>
                   </svg>
                 </div>
-
-                <!-- Success Tooltip (Hover) -->
                 <div *ngIf="emailStatus === 'available'"
                   class="absolute right-0 top-full mt-2 w-48 bg-black text-white text-xs rounded-lg py-2 px-3 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-10 transform translate-y-2 group-hover:translate-y-0">
                   <div class="absolute -top-1 right-4 w-2 h-2 bg-black transform rotate-45"></div>
@@ -78,20 +66,16 @@
                 </div>
               </div>
             </div>
-
             <p *ngIf="!isLogin && emailStatus === 'taken'" class="text-xs text-red-500 mt-1">
               Username/Email already taken
             </p>
           </div>
-
           <div class="space-y-2">
             <label class="text-sm font-medium text-gray-300">Password</label>
             <input type="password" [(ngModel)]="password" name="password" required
               class="w-full px-3 py-2.5 bg-gray-800 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition duration-200 outline-none text-sm placeholder:text-gray-400"
               placeholder="••••••••" />
           </div>
-
-          <!-- Password Requirements -->
           <div *ngIf="!isLogin && password" class="bg-gray-800 p-3 rounded-lg border border-gray-100">
             <p class="text-xs font-semibold text-gray-500 mb-2">Password Requirements:</p>
             <ul class="space-y-1">
@@ -125,7 +109,6 @@
               </li>
             </ul>
           </div>
-
           <div *ngIf="error"
             [class]="errorType === 'warning' ? 'bg-yellow-50 border-yellow-500' : 'bg-red-50 border-red-500'"
             class="border-l-4 p-3 rounded transition-all">
@@ -146,7 +129,6 @@
                 [class]="errorType === 'warning' ? 'text-yellow-700' : 'text-red-700'">{{ error }}</span>
             </div>
           </div>
-
           <button type="submit" [disabled]="loading"
             class="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-2.5 px-4 rounded-lg font-semibold text-sm hover:from-red-700 hover:to-red-800 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center">
             <svg *ngIf="loading" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
@@ -159,7 +141,6 @@
           </button>
         </form>
       </div>
-
       <div class="px-8 py-4 bg-gray-800 border-t border-red-600">
         <button (click)="toggleMode()"
           class="w-full text-center text-sm text-gray-400 hover:text-red-500 font-medium transition duration-200">
@@ -168,7 +149,6 @@
         </button>
       </div>
     </div>
-
     <p class="text-center text-xs text-gray-500 mt-6">
       By continuing, you agree to our Terms of Service and Privacy Policy
     </p>

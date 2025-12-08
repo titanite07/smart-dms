@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+﻿import { Routes } from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { LandingComponent } from './components/landing/landing.component';
@@ -7,7 +7,6 @@ import { ActivityLogComponent } from './components/activity-log/activity-log.com
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
 import { PublicViewComponent } from './components/public-view/public-view.component';
 import { authGuard } from './guards/auth.guard';
-
 export const routes: Routes = [
     { path: '', component: LandingComponent, data: { animation: 'LandingPage' } },
     { path: 'login', component: LoginComponent, data: { animation: 'LoginPage' } },

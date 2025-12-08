@@ -1,5 +1,4 @@
-const mongoose = require('mongoose');
-
+﻿const mongoose = require('mongoose');
 const commentSchema = new mongoose.Schema({
     document: {
         type: mongoose.Schema.Types.ObjectId,
@@ -37,8 +36,6 @@ const commentSchema = new mongoose.Schema({
         default: false
     }
 }, { timestamps: true });
-
 commentSchema.index({ document: 1, createdAt: -1 });
 commentSchema.index({ user: 1 });
-
 module.exports = mongoose.model('Comment', commentSchema);

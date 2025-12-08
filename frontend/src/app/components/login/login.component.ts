@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -6,7 +6,6 @@ import { AuthService } from '../../services/auth.service';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
-
 @Component({
     selector: 'app-login',
     standalone: true,
@@ -29,13 +28,9 @@ export class LoginComponent implements OnInit {
     loading = false;
     error = '';
     errorType: 'error' | 'warning' = 'error';
-
-
     emailStatus: 'idle' | 'checking' | 'available' | 'taken' = 'idle';
     private emailSubject = new Subject<string>();
-
     constructor(private authService: AuthService, private router: Router) {
-
         this.emailSubject.pipe(
             debounceTime(500),
             distinctUntilChanged(),
@@ -46,35 +41,29 @@ export class LoginComponent implements OnInit {
             })
         ).subscribe({
             next: (response: any) => {
-
                 this.emailStatus = response.isAvailable ? 'available' : 'taken';
             },
             error: () => this.emailStatus = 'idle'
         });
     }
-
     ngOnInit() {
         if (this.authService.isAuthenticated()) {
             this.router.navigate(['/dashboard']);
         }
     }
-
     onEmailInput(email: string) {
         if (!this.isLogin) {
             this.emailSubject.next(email);
         }
     }
-
     toggleMode() {
         this.isLogin = !this.isLogin;
         this.error = '';
         this.emailStatus = 'idle';
     }
-
     onSubmit() {
         this.loading = true;
         this.error = '';
-
         if (this.isLogin) {
             this.authService.login(this.email, this.password).subscribe({
                 next: () => {
@@ -87,14 +76,12 @@ export class LoginComponent implements OnInit {
                 }
             });
         } else {
-
             if (this.emailStatus === 'taken') {
                 this.error = 'Please use a different email address.';
                 this.errorType = 'warning';
                 this.loading = false;
                 return;
             }
-
             this.authService.signup(this.name, this.email, this.password).subscribe({
                 next: () => {
                     this.isLogin = true;

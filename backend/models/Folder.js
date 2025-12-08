@@ -1,5 +1,4 @@
-const mongoose = require('mongoose');
-
+﻿const mongoose = require('mongoose');
 const folderSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -31,5 +30,4 @@ const folderSchema = new mongoose.Schema({
 }, {
     timestamps: true
 });
-
 module.exports = mongoose.model('Folder', folderSchema);

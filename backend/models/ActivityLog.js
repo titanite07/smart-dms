@@ -1,5 +1,4 @@
-const mongoose = require('mongoose');
-
+﻿const mongoose = require('mongoose');
 const activityLogSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
@@ -40,9 +39,7 @@ const activityLogSchema = new mongoose.Schema({
         type: String
     }
 }, { timestamps: true });
-
 activityLogSchema.index({ user: 1, createdAt: -1 });
 activityLogSchema.index({ resourceType: 1, resourceId: 1 });
 activityLogSchema.index({ action: 1 });
-
 module.exports = mongoose.model('ActivityLog', activityLogSchema);
