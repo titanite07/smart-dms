@@ -29,6 +29,12 @@ export class DashboardComponent implements OnInit {
     currentUser: any;
     loading = false;
 
+    // Upload progress tracking
+    isUploading = false;
+    currentUploadingFile = '';
+    uploadedCount = 0;
+    totalUploadCount = 0;
+
     @HostListener('document:keydown', ['$event'])
     handleKeyboardEvent(event: KeyboardEvent) {
         const target = event.target as HTMLElement;
@@ -281,7 +287,14 @@ export class DashboardComponent implements OnInit {
         const hasFolder = entries.some(e => e.isDirectory);
 
         if (hasFolder) {
+            // Count total files first
+            this.totalUploadCount = await this.countFilesInEntries(entries);
+            this.uploadedCount = 0;
+            this.isUploading = true;
+
             await this.processEntriesWithFolders(entries, this.currentFolderId);
+
+            this.isUploading = false;
             this.loadContent();
         } else {
             const files = await this.getFilesFromEntries(entries);
@@ -294,21 +307,43 @@ export class DashboardComponent implements OnInit {
 
     async processEntriesWithFolders(entries: FileSystemEntry[], parentFolderId: string | null): Promise<void> {
         for (const entry of entries) {
-            if (entry.isDirectory) {
-                const dirEntry = entry as FileSystemDirectoryEntry;
-                const newFolder = await this.folderService.createFolder(entry.name, parentFolderId).toPromise();
+            try {
+                if (entry.isDirectory) {
+                    const dirEntry = entry as FileSystemDirectoryEntry;
+                    const newFolder = await this.folderService.createFolder(entry.name, parentFolderId).toPromise();
 
-                if (newFolder) {
-                    const subEntries = await this.readDirectory(dirEntry);
-                    await this.processEntriesWithFolders(subEntries, newFolder._id);
+                    if (newFolder) {
+                        const subEntries = await this.readDirectory(dirEntry);
+                        await this.processEntriesWithFolders(subEntries, newFolder._id);
+                    }
+                } else if (entry.isFile) {
+                    const fileEntry = entry as FileSystemFileEntry;
+                    const file = await this.getFileFromEntry(fileEntry);
+                    if (file) {
+                        this.currentUploadingFile = file.name;
+                        const tags = this.documentService.generateTags(file);
+                        // Retry up to 3 times on failure
+                        let retries = 3;
+                        while (retries > 0) {
+                            try {
+                                await this.documentService.uploadDocument(file, file.name, tags, parentFolderId).toPromise();
+                                this.uploadedCount++;
+                                break; // Success, exit retry loop
+                            } catch (uploadError) {
+                                retries--;
+                                if (retries === 0) {
+                                    console.error(`Failed to upload ${file.name} after 3 attempts:`, uploadError);
+                                } else {
+                                    // Wait 500ms before retry
+                                    await new Promise(resolve => setTimeout(resolve, 500));
+                                }
+                            }
+                        }
+                    }
                 }
-            } else if (entry.isFile) {
-                const fileEntry = entry as FileSystemFileEntry;
-                const file = await this.getFileFromEntry(fileEntry);
-                if (file) {
-                    const tags = this.documentService.generateTags(file);
-                    await this.documentService.uploadDocument(file, file.name, tags, parentFolderId).toPromise();
-                }
+            } catch (error) {
+                console.error(`Error processing entry ${entry.name}:`, error);
+                // Continue with next entry instead of stopping
             }
         }
     }
@@ -350,5 +385,19 @@ export class DashboardComponent implements OnInit {
             }
         }
         return files;
+    }
+
+    async countFilesInEntries(entries: FileSystemEntry[]): Promise<number> {
+        let count = 0;
+        for (const entry of entries) {
+            if (entry.isDirectory) {
+                const dirEntry = entry as FileSystemDirectoryEntry;
+                const subEntries = await this.readDirectory(dirEntry);
+                count += await this.countFilesInEntries(subEntries);
+            } else if (entry.isFile) {
+                count++;
+            }
+        }
+        return count;
     }
 }
