@@ -104,7 +104,7 @@ export class UploadModalComponent implements OnInit {
 
             const file = this.selectedFiles[index];
             const docTitle = this.selectedFiles.length > 1 ? file.name : this.title;
-            const docTags = this.selectedFiles.length > 1 ? this.generateTags(file) : this.tags;
+            const docTags = this.selectedFiles.length > 1 ? this.documentService.generateTags(file) : this.tags;
             const folderId = (this.currentFolderId === 'null' || this.currentFolderId === 'root') ? null : this.currentFolderId;
 
             this.documentService.uploadDocument(file, docTitle, docTags, folderId).subscribe({
