@@ -1,5 +1,5 @@
 <div class="flex h-screen bg-white dark:bg-slate-900 font-sans overflow-hidden w-full transition-colors duration-300">
-
+    <!-- Debug Element to prove component loaded -->
     <div style="display: none;" id="dashboard-loaded-marker"></div>
     <aside
         class="w-72 bg-white dark:bg-slate-900 border-r border-gray-200 dark:border-slate-800 hidden md:flex flex-col z-20 transition-all duration-300">
@@ -38,6 +38,7 @@
                 All Files
             </button>
 
+            <!-- ... Similar updates for other buttons ... -->
             <button (click)="setView('recent')"
                 [class]="currentView === 'recent' ? 'bg-zinc-100 dark:bg-slate-800 text-black dark:text-white font-semibold' : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-slate-800 hover:text-black dark:hover:text-white'"
                 class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group">
@@ -107,3 +108,337 @@
                     </path>
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                </svg>
+                Admin Panel
+            </a>
+
+
+            <!-- Quick Features -->
+            <button (click)="findDuplicates()"
+                class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-slate-800 hover:text-black dark:hover:text-white">
+                <svg class="w-5 h-5 text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-300 transition-colors"
+                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z">
+                    </path>
+                </svg>
+                Find Duplicates
+            </button>
+
+            <!-- Storage Bar -->
+            <app-storage-bar class="mt-4"></app-storage-bar>
+        </nav>
+
+        <div class="p-4 border-t border-gray-100 dark:border-slate-800 bg-white dark:bg-slate-900">
+            <a routerLink="/profile"
+                class="flex items-center gap-3 px-3 py-2 mb-2 bg-zinc-50 dark:bg-slate-800 rounded-xl border border-zinc-100 dark:border-slate-700 hover:bg-zinc-100 dark:hover:bg-slate-700 hover:border-zinc-200 dark:hover:border-slate-600 transition-all duration-200 cursor-pointer group">
+                <div
+                    class="w-9 h-9 rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center text-white font-bold border-2 border-white dark:border-slate-700 shadow-sm group-hover:scale-105 transition-transform">
+                    {{ currentUser?.name?.charAt(0) }}
+                </div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-sm font-bold text-zinc-900 dark:text-white truncate">{{ currentUser?.name }}</p>
+                    <p class="text-xs text-zinc-500 dark:text-zinc-400 truncate">{{ currentUser?.email }}</p>
+                </div>
+                <svg class="w-4 h-4 text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-300 transition-colors"
+                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z">
+                    </path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                </svg>
+            </a>
+            <button (click)="logout()"
+                class="w-full flex items-center justify-center gap-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-700 dark:hover:text-red-400 px-3 py-2.5 rounded-lg transition-all font-medium border border-transparent hover:border-red-100 dark:hover:border-red-900/30">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
+                    </path>
+                </svg>
+                Sign Out
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 flex flex-col h-full relative overflow-hidden bg-zinc-50/30 dark:bg-slate-900/50">
+        <!-- Glass Header Overlay -->
+        <div
+            class="absolute inset-x-0 top-0 h-2 bg-gradient-to-b from-white/10 dark:from-slate-900/10 to-transparent pointer-events-none z-10">
+        </div>
+
+        <div class="flex-1 overflow-y-auto custom-scrollbar p-6 md:p-8" (dragover)="onDragOver($event)"
+            (dragleave)="onDragLeave($event)" (drop)="onDrop($event)" [ngClass]="{
+                'bg-blue-50/50 dark:bg-blue-900/10': isDragging
+            }">
+            <!-- Mobile Header (hidden md) -->
+            <div
+                class="md:hidden flex items-center justify-between mb-8 pb-4 border-b border-gray-200 dark:border-slate-800">
+                <div class="flex items-center gap-2">
+                    <div
+                        class="w-8 h-8 bg-gradient-to-br from-black to-zinc-700 dark:from-white dark:to-zinc-400 rounded-lg flex items-center justify-center shadow-lg">
+                        <svg class="w-5 h-5 text-white dark:text-black" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
+                            </path>
+                        </svg>
+                    </div>
+                    <span class="font-display font-bold text-black dark:text-white">TechVault</span>
+                </div>
+                <button (click)="logout()"
+                    class="p-2 text-zinc-500 rounded-lg hover:bg-zinc-100 dark:hover:bg-slate-800">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
+                        </path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Top Bar -->
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
+                <div class="animate-fade-in-up">
+                    <h1 class="text-3xl font-display font-bold text-black dark:text-white capitalize tracking-tight">
+                        {{ currentView === 'all' ? 'Your Files' : currentView === 'shared' ? 'Shared with me' :
+                        currentView === 'recent' ? 'Recent Activity' : currentView === 'trash' ? 'Trash' : 'Starred
+                        Documents' }}
+                    </h1>
+                    <p class="text-zinc-500 dark:text-zinc-400 mt-1 flex items-center gap-2">
+                        <span class="inline-block w-2 h-2 rounded-full bg-green-500"></span>
+                        <span *ngIf="folders.length > 0">{{ folders.length }} folder{{ folders.length !== 1 ? 's' : ''
+                            }}</span>
+                        <span *ngIf="folders.length > 0 && filteredDocuments.length > 0">&middot;</span>
+                        <span *ngIf="filteredDocuments.length > 0">{{ filteredDocuments.length }} document{{
+                            filteredDocuments.length !== 1 ? 's' : '' }}</span>
+                        <span *ngIf="folders.length === 0 && filteredDocuments.length === 0">Empty</span>
+                    </p>
+                </div>
+
+                <div class="flex flex-col md:flex-row gap-4 items-stretch md:items-center animate-fade-in-up delay-100">
+                    <div class="relative w-full md:w-80 group">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="w-5 h-5 text-zinc-400 dark:text-zinc-500 group-focus-within:text-black dark:group-focus-within:text-white transition-colors"
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </div>
+                        <input type="text" [(ngModel)]="searchQuery" (input)="onSearch()"
+                            placeholder="Search your documents..."
+                            class="w-full pl-10 pr-4 py-2.5 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-black dark:focus:ring-white focus:border-black dark:focus:border-white text-sm text-black dark:text-white shadow-sm transition-all placeholder:text-zinc-400 outline-none" />
+                    </div>
+                    <div class="flex gap-3">
+                        <!-- Theme Toggle -->
+                        <button (click)="toggleTheme()"
+                            class="p-2.5 rounded-xl border border-gray-200 dark:border-slate-700 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-slate-800 hover:text-black dark:hover:text-white transition-all">
+                            <svg *ngIf="isDarkMode" class="w-5 h-5" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z">
+                                </path>
+                            </svg>
+                            <svg *ngIf="!isDarkMode" class="w-5 h-5" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z">
+                                </path>
+                            </svg>
+                        </button>
+
+                        <button (click)="createFolder()"
+                            class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-white dark:bg-slate-800 text-zinc-700 dark:text-white border border-gray-200 dark:border-slate-700 rounded-xl font-semibold text-sm hover:bg-zinc-50 dark:hover:bg-slate-700 hover:text-black dark:hover:text-white transition-all duration-200">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z">
+                                </path>
+                            </svg>
+                            New Folder
+                        </button>
+                        <button (click)="openUploadModal()"
+                            class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-black dark:bg-white text-white dark:text-black rounded-xl font-semibold text-sm hover:bg-zinc-800 dark:hover:bg-zinc-100 shadow-lg shadow-black/20 dark:shadow-white/20 transform hover:-translate-y-0.5 transition-all duration-200 active:translate-y-0">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 4v16m8-8H4">
+                                </path>
+                            </svg>
+                            Upload File
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Area -->
+            <div *ngIf="loading" class="flex justify-center py-24">
+                <div class="flex flex-col items-center gap-4">
+                    <div
+                        class="w-12 h-12 border-4 border-zinc-200 border-t-black dark:border-slate-700 dark:border-t-white rounded-full animate-spin">
+                    </div>
+                    <p class="text-zinc-500 dark:text-zinc-400 font-medium animate-pulse">Loading workspace...</p>
+                </div>
+            </div>
+
+            <div *ngIf="!loading" class="animate-fade-in-up delay-200">
+                <!-- We are wrapping the list in a modern card container -->
+                <div
+                    class="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-800 p-1">
+                    <!-- Breadcrumbs -->
+                    <div *ngIf="currentView === 'all'"
+                        class="px-6 py-3 border-b border-gray-100 dark:border-slate-800 flex items-center gap-2 text-sm">
+                        <span (click)="onNavigateUp(null)"
+                            class="cursor-pointer text-zinc-500 dark:text-zinc-400 hover:text-black dark:hover:text-white transition-colors font-medium">
+                            Home
+                        </span>
+                        <ng-container *ngFor="let crumb of breadcrumbs">
+                            <svg class="w-4 h-4 text-zinc-300 dark:text-slate-700" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
+                                </path>
+                            </svg>
+                            <span (click)="onNavigateUp(crumb.id)"
+                                class="cursor-pointer text-zinc-500 dark:text-zinc-400 hover:text-black dark:hover:text-white transition-colors font-medium">
+                                {{ crumb.name }}
+                            </span>
+                        </ng-container>
+                    </div>
+
+                    <app-document-list [documents]="filteredDocuments" [folders]="folders"
+                        [currentUserId]="currentUser?._id" [isTrashView]="currentView === 'trash'"
+                        (refresh)="loadContent()" (navigateToFolder)="onNavigateToFolder($event)">
+                    </app-document-list>
+                </div>
+
+                <div *ngIf="filteredDocuments.length === 0 && folders.length === 0"
+                    class="text-center py-20 bg-white dark:bg-slate-900 rounded-3xl border-2 border-dashed border-zinc-200 dark:border-slate-700 mt-4 transition-colors duration-200">
+                    <div
+                        class="w-20 h-20 bg-zinc-50 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner pointer-events-none">
+                        <svg class="w-10 h-10 text-zinc-300 dark:text-slate-600" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-display font-semibold text-black dark:text-white mb-2">No documents found
+                    </h3>
+                    <p class="text-zinc-500 dark:text-zinc-400 max-w-sm mx-auto">It looks empty here. Upload a new
+                        document or change
+                        your
+                        filters to get started.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+
+
+<app-upload-modal *ngIf="showUploadModal" [currentFolderId]="currentFolderId"
+    [currentFolderName]="getCurrentFolderName()" [files]="draggedFiles" (close)="closeUploadModal()"
+    (uploadSuccess)="onUploadSuccess()"></app-upload-modal>
+
+<!-- Upload Progress Indicator -->
+<div *ngIf="isUploading"
+    class="fixed bottom-6 right-6 bg-white dark:bg-slate-800 rounded-2xl shadow-2xl border border-gray-200 dark:border-slate-700 p-4 min-w-[280px] z-50 animate-slide-up">
+    <div class="flex items-center gap-3">
+        <div class="relative">
+            <div
+                class="w-10 h-10 rounded-full border-3 border-zinc-200 dark:border-slate-600 border-t-black dark:border-t-white animate-spin">
+            </div>
+            <svg class="w-5 h-5 text-black dark:text-white absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+            </svg>
+        </div>
+        <div class="flex-1">
+            <p class="text-sm font-semibold text-black dark:text-white">Uploading files...</p>
+            <p class="text-xs text-zinc-500 dark:text-zinc-400 truncate max-w-[180px]">{{ currentUploadingFile }}</p>
+        </div>
+        <div class="text-right">
+            <span class="text-sm font-bold text-black dark:text-white">{{ uploadedCount }}/{{ totalUploadCount }}</span>
+        </div>
+    </div>
+    <div class="mt-3 w-full h-1.5 bg-zinc-200 dark:bg-slate-600 rounded-full overflow-hidden">
+        <div class="h-full bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full transition-all duration-300"
+            [style.width.%]="totalUploadCount > 0 ? (uploadedCount / totalUploadCount) * 100 : 0"></div>
+    </div>
+</div>
+</div>
+
+<!-- Duplicates Modal -->
+<div *ngIf="showDuplicatesModal"
+    class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[80vh] overflow-hidden">
+        <div class="p-6 border-b border-gray-200 dark:border-slate-700">
+            <div class="flex items-center justify-between">
+                <h2 class="text-xl font-bold text-gray-900 dark:text-white">Duplicate Files</h2>
+                <button (click)="closeDuplicatesModal()"
+                    class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                        </path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="p-6 overflow-y-auto max-h-[calc(80vh-140px)]">
+            <div *ngIf="duplicates.length === 0" class="text-center py-12 text-gray-500 dark:text-gray-400">
+                <svg class="w-16 h-16 mx-auto mb-4 text-green-500" fill="none" stroke="currentColor"
+                    viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <p class="text-lg font-semibold">No duplicates found!</p>
+                <p class="text-sm mt-2">All your files are unique.</p>
+            </div>
+
+            <div *ngFor="let dup of duplicates" class="mb-6 p-4 bg-gray-50 dark:bg-slate-700/50 rounded-xl">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                        {{ dup.count }} duplicate files ({{ (dup.size / 1024 / 1024).toFixed(2) }} MB each)
+                    </span>
+                    <span
+                        class="text-xs px-2 py-1 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300 rounded-full">
+                        Wasting {{ ((dup.size * (dup.count - 1)) / 1024 / 1024).toFixed(2) }} MB
+                    </span>
+                </div>
+                <div class="space-y-2">
+                    <div *ngFor="let file of dup.files; let i = index"
+                        class="flex items-center justify-between p-3 bg-white dark:bg-slate-600 rounded-lg">
+                        <div class="flex items-center gap-3 flex-1">
+                            <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z">
+                                </path>
+                            </svg>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-sm font-medium text-gray-900 dark:text-white truncate">{{ file.title }}
+                                </p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">{{ file.createdAt | date:'short' }}
+                                </p>
+                            </div>
+                        </div>
+                        <span *ngIf="i > 0"
+                            class="text-xs px-2 py-1 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded">
+                            Duplicate
+                        </span>
+                        <span *ngIf="i === 0"
+                            class="text-xs px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 rounded">
+                            Original
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="p-4 border-t border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-800/50">
+            <button (click)="closeDuplicatesModal()"
+                class="w-full px-4 py-2 bg-gray-900 dark:bg-white text-white dark:text-black rounded-lg font-medium hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors">
+                Close
+            </button>
+        </div>
+    </div>
+</div>
