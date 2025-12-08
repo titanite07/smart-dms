@@ -389,21 +389,3 @@ This project was created as an assignment. For improvements:
 
 This project is created for educational purposes.
 
-## 👤 Author
-
-**Tarun Balaji V**
-- GitHub: [@titanite07](https://github.com/titanite07)
-- Project Repository: [smart-dms](https://github.com/titanite07/smart-dms)
-
-## 🙏 Acknowledgments
-
-- Angular Team for the excellent framework
-- MongoDB for the database solution
-- TailwindCSS for styling inspiration
-- All open-source contributors
-
----
-
-**Note**: This is a submission for SmartWinnr assignment. All concepts and implementation are original work completed within the deadline.
-
-**Submission Date**: December 2025

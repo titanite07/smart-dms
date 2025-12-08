@@ -2,7 +2,7 @@
     <div
         class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden border border-gray-200 dark:border-slate-700 animate-slideUp">
 
-        <!-- Header -->
+
         <div class="px-6 py-4 border-b border-gray-100 dark:border-slate-700 bg-zinc-50 dark:bg-slate-800/50">
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-3">
@@ -30,7 +30,7 @@
         </div>
 
         <div class="p-6">
-            <!-- Generated Link Display -->
+
             <div *ngIf="generatedLink" class="mb-6">
                 <div
                     class="p-4 bg-green-50 dark:bg-green-900/20 rounded-xl border border-green-200 dark:border-green-800">
@@ -97,9 +97,9 @@
                 </button>
             </div>
 
-            <!-- Create Link Form -->
+
             <div *ngIf="!generatedLink" class="space-y-4">
-                <!-- Permission -->
+
                 <div>
                     <label class="block text-sm font-medium text-zinc-700 dark:text-slate-300 mb-2">Permission</label>
                     <div class="flex gap-3">
@@ -141,7 +141,7 @@
                     </div>
                 </div>
 
-                <!-- Expiry -->
+
                 <div>
                     <label class="flex items-center gap-2 cursor-pointer">
                         <input type="checkbox" [(ngModel)]="useExpiry"
@@ -159,7 +159,7 @@
                     </div>
                 </div>
 
-                <!-- Password -->
+
                 <div>
                     <label class="flex items-center gap-2 cursor-pointer">
                         <input type="checkbox" [(ngModel)]="usePassword"

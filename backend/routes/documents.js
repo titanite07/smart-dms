@@ -17,7 +17,11 @@ const {
     createPublicLink,
     revokePublicLink,
     accessPublicLink,
-    getStorageUsage
+    getStorageUsage,
+    getDuplicates,
+    bulkDelete,
+    bulkMove,
+    getAnalytics
 } = require('../controllers/documentController');
 const { protect } = require('../middleware/authMiddleware');
 const upload = require('../middleware/uploadMiddleware');
@@ -42,5 +46,9 @@ router.put('/:id/restore', protect, restoreDocument);
 router.delete('/:id', protect, deleteDocument);
 router.delete('/:id/versions/:versionId', protect, deleteVersion);
 router.delete('/:id/permanent', protect, permanentDelete);
+router.get('/duplicates', protect, getDuplicates);
+router.post('/bulk-delete', protect, bulkDelete);
+router.post('/bulk-move', protect, bulkMove);
+router.get('/analytics', protect, getAnalytics);
 
 module.exports = router;

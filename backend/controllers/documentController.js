@@ -2,6 +2,7 @@ const Document = require('../models/Document');
 const User = require('../models/User');
 const path = require('path');
 const fs = require('fs');
+const crypto = require('crypto');
 const { logActivity } = require('./activityController');
 
 const uploadDocument = async (req, res) => {
@@ -242,22 +243,22 @@ const downloadFile = async (req, res) => {
             if (!versionDoc) {
                 return res.status(404).json({ message: 'Version not found' });
             }
-            // For versions, try to extract filename from filePath or trust filePath if relative
+
             filePath = versionDoc.filePath;
         } else {
-            // For current version
+
             if (document.filename) {
-                // If we have the filename, construct path reliably
+
                 filePath = path.join(__dirname, '../uploads', document.filename);
             } else {
-                // Fallback for older docs: normalize path separators
+
                 filePath = document.currentPath;
             }
         }
 
-        // Fix for cross-OS path issues (Windows backslashes on Linux)
+
         if (filePath.includes('\\') && path.sep === '/') {
-            // If path has backslashes but we are on Linux
+
             const parts = filePath.split('\\');
             const fileName = parts[parts.length - 1];
             filePath = path.join(__dirname, '../uploads', fileName);
@@ -607,6 +608,135 @@ const getStorageUsage = async (req, res) => {
     }
 };
 
+// Find duplicate files
+const getDuplicates = async (req, res) => {
+    try {
+        const documents = await Document.find({
+            owner: req.user._id,
+            isDeleted: false
+        });
+
+        // Group by fileSize and create hash for matching sizes
+        const sizeGroups = {};
+        for (const doc of documents) {
+            if (!sizeGroups[doc.fileSize]) {
+                sizeGroups[doc.fileSize] = [];
+            }
+            sizeGroups[doc.fileSize].push(doc);
+        }
+
+        // Find duplicates (files with same size)
+        const duplicates = [];
+        for (const size in sizeGroups) {
+            if (sizeGroups[size].length > 1) {
+                duplicates.push({
+                    size: parseInt(size),
+                    count: sizeGroups[size].length,
+                    files: sizeGroups[size]
+                });
+            }
+        }
+
+        res.json(duplicates);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// Bulk delete documents
+const bulkDelete = async (req, res) => {
+    try {
+        const { documentIds } = req.body;
+
+        if (!documentIds || !Array.isArray(documentIds)) {
+            return res.status(400).json({ message: 'Invalid document IDs' });
+        }
+
+        const result = await Document.updateMany(
+            {
+                _id: { $in: documentIds },
+                owner: req.user._id
+            },
+            {
+                isDeleted: true,
+                deletedAt: new Date()
+            }
+        );
+
+        await logActivity(req.user._id, 'bulkDelete', 'document', null, `${result.modifiedCount} documents`, {}, req);
+
+        res.json({
+            message: `${result.modifiedCount} documents moved to trash`,
+            count: result.modifiedCount
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// Bulk move documents
+const bulkMove = async (req, res) => {
+    try {
+        const { documentIds, targetFolderId } = req.body;
+
+        if (!documentIds || !Array.isArray(documentIds)) {
+            return res.status(400).json({ message: 'Invalid document IDs' });
+        }
+
+        const result = await Document.updateMany(
+            {
+                _id: { $in: documentIds },
+                owner: req.user._id
+            },
+            {
+                parentFolder: targetFolderId || null
+            }
+        );
+
+        await logActivity(req.user._id, 'bulkMove', 'document', null, `${result.modifiedCount} documents`, { targetFolderId }, req);
+
+        res.json({
+            message: `${result.modifiedCount} documents moved`,
+            count: result.modifiedCount
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// Get storage analytics
+const getAnalytics = async (req, res) => {
+    try {
+        const documents = await Document.find({
+            owner: req.user._id,
+            isDeleted: false
+        });
+
+        const totalSize = documents.reduce((sum, doc) => sum + (doc.fileSize || 0), 0);
+
+        // Group by file type
+        const fileTypes = {};
+        documents.forEach(doc => {
+            const ext = path.extname(doc.title).toLowerCase() || 'other';
+            if (!fileTypes[ext]) {
+                fileTypes[ext] = { count: 0, size: 0 };
+            }
+            fileTypes[ext].count++;
+            fileTypes[ext].size += doc.fileSize || 0;
+        });
+
+        res.json({
+            totalDocuments: documents.length,
+            totalSize: totalSize,
+            totalSizeMB: (totalSize / (1024 * 1024)).toFixed(2),
+            fileTypes: fileTypes,
+            averageFileSize: documents.length > 0 ? (totalSize / documents.length) : 0
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 module.exports = {
     uploadDocument,
     uploadVersion,
@@ -625,5 +755,9 @@ module.exports = {
     createPublicLink,
     revokePublicLink,
     accessPublicLink,
-    getStorageUsage
+    getStorageUsage,
+    getDuplicates,
+    bulkDelete,
+    bulkMove,
+    getAnalytics
 };

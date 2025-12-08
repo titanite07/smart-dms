@@ -39,7 +39,7 @@ const userSchema = new mongoose.Schema({
   },
   storageQuota: {
     type: Number,
-    default: 1073741824 // 1GB in bytes
+    default: 5073741824
   },
   isActive: {
     type: Boolean,

@@ -11,7 +11,7 @@
         </div>
 
         <form (ngSubmit)="onSubmit()" class="space-y-5">
-            <!-- Destination Context -->
+
             <div class="bg-gray-50 p-3 rounded-lg border border-gray-100 flex items-center justify-between">
                 <span class="text-sm text-gray-500">Uploading to:</span>
                 <span class="text-sm font-semibold text-gray-800 flex items-center gap-1">
@@ -24,7 +24,7 @@
                 </span>
             </div>
 
-            <!-- Title Input (Hidden for multi-file drag drop) -->
+
             <div *ngIf="!isDragDrop || selectedFiles.length === 1">
                 <label class="block text-sm font-medium text-gray-700 mb-2">Document Title</label>
                 <input type="text" [(ngModel)]="title" (ngModelChange)="onTitleChange()" name="title" required
@@ -32,7 +32,7 @@
                     placeholder="Enter document title" />
             </div>
 
-            <!-- Simplified File Display for Drag Drop -->
+
             <div *ngIf="isDragDrop">
                 <div class="block text-sm font-medium text-gray-700 mb-2">Selected Files</div>
                 <div

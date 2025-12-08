@@ -1,11 +1,10 @@
-<div
-  class="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
+<div class="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-red-50 via-rose-50 to-pink-100">
   <div class="w-full max-w-md">
     <div class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
       <div class="p-8">
         <div class="text-center mb-8">
           <div
-            class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full mb-4">
+            class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-red-500 to-rose-600 rounded-full mb-4">
             <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
@@ -24,7 +23,7 @@
           <div *ngIf="!isLogin" class="space-y-2">
             <label class="text-sm font-medium text-gray-700">Full Name</label>
             <input type="text" [(ngModel)]="name" name="name" required
-              class="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200 outline-none text-sm"
+              class="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition duration-200 outline-none text-sm"
               placeholder="John Doe" />
           </div>
 
@@ -33,20 +32,18 @@
             <div class="flex gap-2 items-start">
               <div class="relative flex-1">
                 <input type="email" [(ngModel)]="email" (ngModelChange)="onEmailInput($event)" name="email" required
-                  class="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition duration-200 outline-none text-sm placeholder:text-gray-400"
+                  class="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition duration-200 outline-none text-sm placeholder:text-gray-400"
                   [class.border-green-500]="!isLogin && emailStatus === 'available'"
                   [class.border-red-500]="!isLogin && emailStatus === 'taken'"
                   [class.focus:ring-green-500]="!isLogin && emailStatus === 'available'"
                   [class.focus:ring-red-500]="!isLogin && emailStatus === 'taken'" placeholder="you@example.com" />
               </div>
 
-              <!-- Rotating Status Button (Aside) -->
               <div *ngIf="!isLogin && emailStatus !== 'idle'" class="relative group">
                 <div class="w-10 h-10 rounded-lg flex items-center justify-center transition-all duration-300"
                   [class.bg-gray-100]="emailStatus === 'checking'" [class.bg-green-100]="emailStatus === 'available'"
                   [class.bg-red-100]="emailStatus === 'taken'">
 
-                  <!-- Checking Spinner -->
                   <svg *ngIf="emailStatus === 'checking'" class="animate-spin h-5 w-5 text-gray-600"
                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -55,14 +52,12 @@
                     </path>
                   </svg>
 
-                  <!-- Success Icon -->
                   <svg *ngIf="emailStatus === 'available'"
                     class="h-5 w-5 text-green-600 transition-transform duration-500" fill="none" stroke="currentColor"
                     viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                   </svg>
 
-                  <!-- Error Icon -->
                   <svg *ngIf="emailStatus === 'taken'" class="h-5 w-5 text-red-600" fill="none" stroke="currentColor"
                     viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
@@ -70,10 +65,9 @@
                   </svg>
                 </div>
 
-                <!-- Success Tooltip (Hover) -->
                 <div *ngIf="emailStatus === 'available'"
-                  class="absolute right-0 top-full mt-2 w-48 bg-black text-white text-xs rounded-lg py-2 px-3 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-10 transform translate-y-2 group-hover:translate-y-0">
-                  <div class="absolute -top-1 right-4 w-2 h-2 bg-black transform rotate-45"></div>
+                  class="absolute right-0 top-full mt-2 w-48 bg-red-600 text-white text-xs rounded-lg py-2 px-3 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-10 transform translate-y-2 group-hover:translate-y-0">
+                  <div class="absolute -top-1 right-4 w-2 h-2 bg-red-600 transform rotate-45"></div>
                   No user exists with these details
                 </div>
               </div>
@@ -87,11 +81,10 @@
           <div class="space-y-2">
             <label class="text-sm font-medium text-gray-700">Password</label>
             <input type="password" [(ngModel)]="password" name="password" required
-              class="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent transition duration-200 outline-none text-sm placeholder:text-gray-400"
+              class="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition duration-200 outline-none text-sm placeholder:text-gray-400"
               placeholder="••••••••" />
           </div>
 
-          <!-- Password Requirements -->
           <div *ngIf="!isLogin && password" class="bg-gray-50 p-3 rounded-lg border border-gray-100">
             <p class="text-xs font-semibold text-gray-500 mb-2">Password Requirements:</p>
             <ul class="space-y-1">
@@ -148,7 +141,7 @@
           </div>
 
           <button type="submit" [disabled]="loading"
-            class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-2.5 px-4 rounded-lg font-semibold text-sm hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center">
+            class="w-full bg-gradient-to-r from-red-600 to-rose-600 text-white py-2.5 px-4 rounded-lg font-semibold text-sm hover:from-red-700 hover:to-rose-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center">
             <svg *ngIf="loading" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
               <path class="opacity-75" fill="currentColor"
@@ -162,9 +155,9 @@
 
       <div class="px-8 py-4 bg-gray-50 border-t border-gray-200">
         <button (click)="toggleMode()"
-          class="w-full text-center text-sm text-gray-600 hover:text-indigo-600 font-medium transition duration-200">
+          class="w-full text-center text-sm text-gray-600 hover:text-red-600 font-medium transition duration-200">
           {{ isLogin ? "Don't have an account? " : 'Already have an account? ' }}
-          <span class="text-indigo-600 font-semibold">{{ isLogin ? 'Sign up' : 'Sign in' }}</span>
+          <span class="text-red-600 font-semibold">{{ isLogin ? 'Sign up' : 'Sign in' }}</span>
         </button>
       </div>
     </div>

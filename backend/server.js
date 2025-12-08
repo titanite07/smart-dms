@@ -29,7 +29,7 @@ mongoose.connect(process.env.MONGODB_URI)
     .then(() => console.log('MongoDB connected'))
     .catch((err) => console.log('MongoDB connection error:', err));
 
-// API Routes
+
 app.use('/api/auth', authRoutes);
 app.use('/api/documents', documentRoutes);
 app.use('/api/folders', folderRoutes);
@@ -37,12 +37,12 @@ app.use('/api/activity', activityRoutes);
 app.use('/api/comments', commentRoutes);
 app.use('/api/admin', adminRoutes);
 
-// Serve Angular static files in production
+
 const frontendPath = path.join(__dirname, 'public');
 if (fs.existsSync(frontendPath)) {
     app.use(express.static(frontendPath));
 
-    // Handle Angular routing - serve index.html for all non-API routes
+
     app.get('*', (req, res) => {
         if (!req.path.startsWith('/api')) {
             res.sendFile(path.join(frontendPath, 'index.html'));
