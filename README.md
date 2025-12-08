@@ -1,332 +1,412 @@
-# Document Management System
+# TechVault - Document Management System
 
-A full-stack MEAN (MongoDB, Express.js, Angular, Node.js) document management application with features similar to Google Drive. Users can upload files, manage versions, share documents with permissions, and search by tags or filenames.
+A modern, feature-rich Document Management System (DMS) built with Angular and Node.js. TechVault provides enterprise-grade document management with real-time collaboration, version control, and advanced sharing capabilities.
 
-## Features
+![TechVault Banner](./Captures/landing-page.png)
 
-### Authentication
-- User signup and login with JWT tokens
-- Password hashing with bcrypt
-- Protected routes and API endpoints
+## 🚀 Features
 
-### Document Management
-- Upload PDF and image files (JPG, PNG)
-- Add custom tags to documents
-- Search by filename or tags
-- Download documents
+### Core Functionality
+- **📁 Document Upload & Management** - Upload single files or entire folders with drag-and-drop support
+- **📂 Folder Organization** - Create nested folder structures for organized document storage
+- **🔍 Advanced Search** - Search documents by title, tags, and content
+- **⭐ Favorites** - Star important documents for quick access
+- **🗑️ Trash & Recovery** - Soft delete with restore functionality
+
+### Collaboration & Sharing
+- **👥 User Sharing** - Share documents with specific users with view/edit permissions
+- **🔗 Public Links** - Generate shareable public links with optional password protection
+- **💬 Comments** - Add comments and discussions on documents
+- **📜 Activity Logs** - Track who accessed your documents and when
 
 ### Version Control
-- Upload new versions of existing documents
-- Complete version history preserved
-- Download any previous version
-- Automatic version number increment
+- **📊 Version History** - Maintain complete version history of documents
+- **⏮️ Rollback** - Download or restore previous versions
+- **🎨 Visual Timeline** - GitHub-style commit graph for version visualization
 
-### Permissions & Sharing
-- Owner-based access control
-- Share documents with other users via email
-- Two permission levels: View (download only) and Edit (upload new versions)
-- Only owners can modify sharing settings
+### Admin Features
+- **👨‍💼 Admin Dashboard** - Comprehensive admin panel with system statistics
+- **👤 User Management** - Manage users, roles, and permissions
+- **📊 Storage Analytics** - Monitor storage usage and quotas
+- **📈 Activity Monitoring** - View recent system activity
 
-## Tech Stack
+### Security & Authentication
+- **🔐 JWT Authentication** - Secure token-based authentication
+- **📧 Email Verification** - Email verification for new accounts
+- **🔒 Role-Based Access Control** - User, Admin, and SuperAdmin roles
+- **🛡️ Protected Routes** - Secure API endpoints with middleware
 
-### Backend
-- **Node.js** & **Express.js**: REST API server
-- **MongoDB** & **Mongoose**: Document database
-- **JWT**: Authentication tokens
-- **bcrypt.js**: Password encryption
-- **Multer**: File upload handling
-- **CORS**: Cross-origin resource sharing
+### User Experience
+- **🌓 Dark Mode** - Beautiful dark theme support
+- **📱 Responsive Design** - Works seamlessly on desktop, tablet, and mobile
+- **⚡ Real-time Updates** - Live progress indicators for uploads
+- **🎭 Smooth Animations** - Polished UI with micro-interactions
+
+## 🛠️ Tech Stack
 
 ### Frontend
-- **Angular 17**: Standalone components architecture
-- **Tailwind CSS**: Modern, responsive styling
-- **RxJS**: Reactive programming
-- **TypeScript**: Type-safe development
+- **Framework**: Angular 18.2.13
+- **Language**: TypeScript 5.5.x
+- **Styling**: TailwindCSS (via vanilla CSS)
+- **HTTP Client**: RxJS 7.8.x
+- **Build Tool**: Angular CLI with Webpack
 
-## Project Structure
+### Backend
+- **Runtime**: Node.js 18.20.8
+- **Framework**: Express.js 4.21.1
+- **Database**: MongoDB 6.9.0 with Mongoose
+- **Authentication**: JWT (jsonwebtoken 9.0.2)
+- **File Upload**: Multer 1.4.5-lts.1
+- **Email**: Nodemailer 6.9.16
+- **Security**: bcryptjs 2.4.3
 
-```
-Document Management System/
-├── backend/
-│   ├── controllers/
-│   │   ├── authController.js
-│   │   └── documentController.js
-│   ├── middleware/
-│   │   ├── authMiddleware.js
-│   │   └── uploadMiddleware.js
-│   ├── models/
-│   │   ├── User.js
-│   │   └── Document.js
-│   ├── routes/
-│   │   ├── auth.js
-│   │   └── documents.js
-│   ├── uploads/
-│   ├── .env.example
-│   ├── package.json
-│   └── server.js
-└── frontend/
-    ├── src/
-    │   ├── app/
-    │   │   ├── components/
-    │   │   │   ├── login/
-    │   │   │   ├── dashboard/
-    │   │   │   ├── upload-modal/
-    │   │   │   └── document-list/
-    │   │   ├── guards/
-    │   │   │   └── auth.guard.ts
-    │   │   ├── services/
-    │   │   │   ├── auth.service.ts
-    │   │   │   └── document.service.ts
-    │   │   ├── app.component.ts
-    │   │   ├── app.config.ts
-    │   │   └── app.routes.ts
-    │   ├── index.html
-    │   ├── main.ts
-    │   └── styles.css
-    ├── angular.json
-    ├── package.json
-    ├── tailwind.config.js
-    └── tsconfig.json
-```
+## 📋 Prerequisites
 
-## Setup Instructions
+Ensure you have the following installed on your system:
 
-### Prerequisites
-- **Node.js** (v18 or higher)
-- **MongoDB** (v5 or higher)
-- **npm** or **yarn**
+| Software | Version | Download |
+|----------|---------|----------|
+| Node.js | 18.20.8 | [nodejs.org](https://nodejs.org/) |
+| npm | 10.8.2+ | Comes with Node.js |
+| MongoDB | 6.0+ | [mongodb.com](https://www.mongodb.com/try/download/community) |
+| Angular CLI | 18.2.12 | `npm install -g @angular/cli` |
 
-### Backend Setup
+## ⚙️ Local Setup Instructions
 
-1. Navigate to backend directory:
+### 1. Clone the Repository
 ```bash
-cd backend
+git clone https://github.com/titanite07/smart-dms.git
+cd smart-dms
 ```
 
-2. Install dependencies:
+### 2. Install Dependencies
 ```bash
-npm install
+# Install all dependencies (backend + frontend)
+npm run install:all
+
+# Or install separately:
+# Backend
+cd backend && npm install
+# Frontend
+cd frontend && npm install
 ```
 
-3. Create environment file:
-```bash
-cp .env.example .env
-```
+### 3. Environment Configuration
 
-4. Edit `.env` file with your configuration:
+Create a `.env` file in the `backend` directory:
+
 ```env
+# MongoDB Configuration
+MONGODB_URI=mongodb+srv://your-username:your-password@cluster0.mongodb.net/dms?retryWrites=true&w=majority
+
+# JWT Secret
+JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
+
+# Email Configuration (Nodemailer)
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=587
+EMAIL_USER=your-email@gmail.com
+EMAIL_PASS=your-app-specific-password
+
+# Server Configuration
 PORT=5000
-MONGODB_URI=mongodb://localhost:27017/dms
-JWT_SECRET=your_secret_key_change_this
+NODE_ENV=development
+
+# Frontend URL (for CORS and email links)
+FRONTEND_URL=http://localhost:8000
 ```
 
-5. Start MongoDB:
+**Important Notes:**
+- Replace MongoDB URI with your actual connection string
+- For Gmail, use [App Passwords](https://support.google.com/accounts/answer/185833)
+- Generate a strong JWT secret: `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`
+
+### 4. Start the Application
+
+**Development Mode (Separate Servers):**
+
 ```bash
-mongod
-```
-
-6. Start the backend server:
-```bash
-npm start
-```
-
-For development with auto-reload:
-```bash
-npm run dev
-```
-
-### Frontend Setup
-
-1. Navigate to frontend directory:
-```bash
-cd frontend
-```
-
-2. Install dependencies:
-```bash
-npm install
-```
-
-3. Start the development server:
-```bash
-npm start
-```
-
-The Angular app will run on `http://localhost:4200`
-
-### Production Build
-
-Backend:
-```bash
+# Terminal 1 - Start Backend
 cd backend
 npm start
+# Backend runs on http://localhost:5000
+
+# Terminal 2 - Start Frontend
+cd frontend
+npm start
+# Frontend runs on http://localhost:8000
 ```
 
-Frontend:
+**Production Mode (Single Deployment):**
+
+```bash
+# Build and start
+npm run build
+cd backend
+npm start
+# Access at http://localhost:5000
+```
+
+### 5. Access the Application
+
+- **Frontend**: http://localhost:8000
+- **Backend API**: http://localhost:5000/api
+- **Admin Dashboard**: http://localhost:8000/admin (requires admin role)
+
+### 6. Create Test Users
+
+**Register via UI:**
+1. Go to http://localhost:8000
+2. Click "Sign Up"
+3. Enter details and verify email
+
+**Set Admin Role via MongoDB:**
+1. Open MongoDB Compass/Atlas
+2. Navigate to `dms` database → `users` collection
+3. Find your user and change `role` to `"admin"` or `"superadmin"`
+
+## 📸 Screenshots
+
+### Landing Page
+![Landing Page](./Captures/landing-page.png)
+Beautiful landing page with modern design and call-to-action.
+
+### Login & Signup
+![Login](./Captures/login.png)
+Secure authentication with email verification.
+
+### Dashboard - All Files
+![Dashboard](./Captures/dashboard-all-files.png)
+Main dashboard showing all documents and folders.
+
+### Upload Files & Folders
+![Upload](./Captures/upload-modal.png)
+Drag-and-drop upload with auto-tagging.
+
+![Upload Progress](./Captures/upload-progress.png)
+Real-time upload progress indicator.
+
+### Document Preview
+![Preview](./Captures/document-preview.png)
+In-app document preview for PDFs and images.
+
+### Version History
+![Version History](./Captures/version-history.png)
+GitHub-style version timeline with commit graph.
+
+### Share with Users
+![Share Modal](./Captures/share-modal.png)
+Share documents with specific users.
+
+### Public Link Generation
+![Public Link](./Captures/public-link.png)
+Generate shareable public links with password protection.
+
+### Public View
+![Public View](./Captures/public-view.png)
+Beautiful public document viewing page.
+
+### Comments
+![Comments](./Captures/comments-panel.png)
+Add comments and discussions on documents.
+
+### Starred Files
+![Starred](./Captures/starred-view.png)
+Quick access to favorite documents.
+
+### Recent Activity
+![Recent](./Captures/recent-activity.png)
+View recently accessed documents.
+
+### Shared Files
+![Shared](./Captures/shared-view.png)
+Documents shared with you by others.
+
+### Trash & Recovery
+![Trash](./Captures/trash-view.png)
+Recover deleted documents and folders.
+
+### Admin Dashboard
+![Admin Dashboard](./Captures/admin-dashboard.png)
+System statistics and monitoring.
+
+### User Management
+![User Management](./Captures/user-management.png)
+Manage users, roles, and storage quotas.
+
+### Storage Analytics
+![Storage Bar](./Captures/storage-bar.png)
+Real-time storage usage tracking.
+
+### Dark Mode
+![Dark Mode](./Captures/dark-mode.png)
+Beautiful dark theme support throughout the app.
+
+## 🏗️ Project Structure
+
+```
+smart-dms/
+├── backend/                 # Node.js/Express backend
+│   ├── controllers/         # Route controllers
+│   ├── middleware/          # Auth & upload middleware
+│   ├── models/             # MongoDB models
+│   ├── routes/             # API routes
+│   ├── uploads/            # File storage
+│   ├── public/             # Served frontend (production)
+│   └── server.js           # Entry point
+├── frontend/               # Angular frontend
+│   ├── src/
+│   │   ├── app/
+│   │   │   ├── components/ # UI components
+│   │   │   ├── services/   # API services
+│   │   │   └── guards/     # Route guards
+│   │   └── environments/   # Environment configs
+│   └── angular.json        # Angular configuration
+├── Captures/               # Screenshots for documentation
+├── package.json            # Root package (build scripts)
+└── README.md              # This file
+```
+
+## 📝 API Documentation
+
+### Authentication
+- `POST /api/auth/signup` - Register new user
+- `POST /api/auth/login` - Login user
+- `POST /api/auth/verify-email` - Verify email
+- `GET /api/auth/me` - Get current user
+
+### Documents
+- `GET /api/documents` - Get all documents
+- `POST /api/documents/upload` - Upload document
+- `GET /api/documents/:id` - Get document details
+- `GET /api/documents/:id/download` - Download document
+- `DELETE /api/documents/:id` - Delete document
+- `POST /api/documents/:id/share` - Share document
+- `POST /api/documents/:id/public-link` - Generate public link
+- `POST /api/documents/:id/star` - Toggle star
+- `GET /api/documents/public/:token` - Access via public link
+
+### Folders
+- `POST /api/folders` - Create folder
+- `GET /api/folders/:id/contents` - Get folder contents
+- `DELETE /api/folders/:id` - Delete folder
+
+### Admin
+- `GET /api/admin/dashboard` - Get admin stats
+- `GET /api/admin/users` - Get all users
+- `PUT /api/admin/users/:id/role` - Update user role
+
+## 🚀 Deployment
+
+### Deploy to Render
+
+1. **Push to GitHub**
+```bash
+git push origin master
+```
+
+2. **Connect to Render**
+   - Go to [render.com](https://render.com)
+   - Create new Web Service
+   - Connect your GitHub repository
+
+3. **Configure Build**
+   - Build Command: `npm run install:all && npm run build`
+   - Start Command: `cd backend && npm start`
+
+4. **Set Environment Variables**
+   - Add all variables from `.env` file
+   - Update `FRONTEND_URL` to your Render URL
+
+### Deploy Frontend Separately
+
+To deploy frontend to Netlify/Vercel:
 ```bash
 cd frontend
 npm run build
+# Deploy the dist/dms-frontend folder
 ```
 
-The production build will be in `frontend/dist/dms-frontend/`
+## 🧪 Testing
 
-## API Endpoints
+### Manual Testing Checklist
+- [ ] User registration and email verification
+- [ ] Login and authentication
+- [ ] Upload single file
+- [ ] Upload folder with nested structure
+- [ ] Create folders
+- [ ] Search documents
+- [ ] Star/unstar documents
+- [ ] Share document with user
+- [ ] Generate public link
+- [ ] Access public link (logged out)
+- [ ] Add comments
+- [ ] Upload new version
+- [ ] Download previous version
+- [ ] View admin dashboard (admin user)
+- [ ] Manage user roles
+- [ ] Delete and restore documents
+- [ ] Dark mode toggle
 
-### Authentication Routes
+## 🐛 Troubleshooting
 
-#### POST `/api/auth/signup`
-Create new user account
-```json
-{
-  "name": "John Doe",
-  "email": "john@example.com",
-  "password": "password123"
-}
+### MongoDB Connection Issues
+```bash
+# If getting ETIMEOUT errors:
+# 1. Check MongoDB Atlas Network Access (add 0.0.0.0/0)
+# 2. Verify connection string is correct
+# 3. Try changing DNS to 8.8.8.8 (Google DNS)
 ```
 
-#### POST `/api/auth/login`
-Login existing user
-```json
-{
-  "email": "john@example.com",
-  "password": "password123"
-}
+### Port Already in Use
+```bash
+# Kill process on port 5000
+npx kill-port 5000
+
+# Kill process on port 8000
+npx kill-port 8000
 ```
 
-### Document Routes (All require JWT token in Authorization header)
+### Build Errors
+```bash
+# Clear node_modules and reinstall
+rm -rf node_modules package-lock.json
+npm install
 
-#### POST `/api/documents/upload`
-Upload new document
-- Form Data: `file`, `title`, `tags` (comma-separated)
-
-#### POST `/api/documents/:id/version`
-Upload new version of existing document
-- Form Data: `file`
-
-#### GET `/api/documents/`
-Get all documents (owned + shared)
-
-#### GET `/api/documents/search?query=searchterm`
-Search documents by filename or tags
-
-#### POST `/api/documents/:id/share`
-Share document with another user
-```json
-{
-  "email": "user@example.com",
-  "permission": "view"
-}
+# Clear Angular cache
+cd frontend
+rm -rf .angular node_modules
+npm install
 ```
 
-#### GET `/api/documents/:id/versions`
-Get version history of a document
+## 🤝 Contributing
 
-#### GET `/api/documents/:id/download?version=2`
-Download document (optionally specify version number)
+This project was created as an assignment. For improvements:
+1. Fork the repository
+2. Create your feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
 
-## Usage Guide
+## 📄 License
 
-### 1. Create Account
-- Navigate to the login page
-- Click "Don't have an account? Sign up"
-- Enter name, email, and password
-- Click "Sign Up"
+This project is created for educational purposes.
 
-### 2. Upload Document
-- Click "Upload Document" button on dashboard
-- Enter document title
-- Add tags (comma-separated, optional)
-- Select PDF or image file
-- Click "Upload Document"
+## 👤 Author
 
-### 3. Search Documents
-- Use the search bar to filter by filename or tags
-- Results update automatically as you type
+**Tarun Balaji V**
+- GitHub: [@titanite07](https://github.com/titanite07)
+- Project Repository: [smart-dms](https://github.com/titanite07/smart-dms)
 
-### 4. Upload New Version
-- Click the clock icon on any document you own or have edit access to
-- Click "Upload New Version" in the modal
-- Select new file
-- Old version is automatically saved to history
+## 🙏 Acknowledgments
 
-### 5. Share Document
-- Click the share icon (only visible for documents you own)
-- Enter recipient's email address
-- Choose permission level (View or Edit)
-- Click "Share Document"
+- Angular Team for the excellent framework
+- MongoDB for the database solution
+- TailwindCSS for styling inspiration
+- All open-source contributors
 
-### 6. View Version History
-- Click the clock icon on any document
-- See all previous versions with upload dates
-- Download any version by clicking its download button
+---
 
-## Database Schema
+**Note**: This is a submission for SmartWinnr assignment. All concepts and implementation are original work completed within the deadline.
 
-### User Model
-```javascript
-{
-  name: String,
-  email: String (unique),
-  password: String (hashed),
-  timestamps: true
-}
-```
-
-### Document Model
-```javascript
-{
-  title: String,
-  tags: [String],
-  owner: ObjectId (ref: User),
-  currentPath: String,
-  currentVersion: Number,
-  versions: [{
-    filePath: String,
-    versionNumber: Number,
-    uploadedAt: Date
-  }],
-  sharedWith: [{
-    user: ObjectId (ref: User),
-    permission: String (view|edit)
-  }],
-  timestamps: true
-}
-```
-
-## Security Features
-
-- Password hashing with bcrypt (10 salt rounds)
-- JWT token-based authentication
-- Protected API routes with middleware
-- File type validation (PDF and images only)
-- File size limit (10MB max)
-- Owner-based permission checks
-- CORS configuration
-
-## Development Notes
-
-- Backend runs on port 5000 by default
-- Frontend development server runs on port 4200
-- Uploaded files are stored in `backend/uploads/` directory
-- MongoDB stores file metadata and paths, not the files themselves
-- Version control preserves all previous file versions on disk
-
-## Future Enhancements
-
-- File preview functionality
-- Folder organization
-- Bulk file operations
-- Activity logs
-- Email notifications for sharing
-- File encryption
-- Cloud storage integration (AWS S3, Google Cloud Storage)
-- Advanced search filters
-- Document comments and annotations
-
-## License
-
-ISC
-
-## Author
-
-Document Management System - MEAN Stack Application
+**Submission Date**: December 2025
