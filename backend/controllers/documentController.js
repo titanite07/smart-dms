@@ -18,6 +18,7 @@ const uploadDocument = async (req, res) => {
             currentPath: req.file.path,
             filename: req.file.filename,
             fileSize: req.file.size,
+            mimeType: req.file.mimetype,
             currentVersion: 1,
             versions: []
         });
