@@ -1,11 +1,9 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+﻿import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 export interface BreadcrumbItem {
   label: string;
   folderId: string | null;
 }
-
 @Component({
   selector: 'app-breadcrumb',
   standalone: true,
